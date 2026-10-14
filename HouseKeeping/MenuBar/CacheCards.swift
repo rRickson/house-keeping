@@ -14,6 +14,11 @@ private func cardStatus(_ row: QuickRow, model: AppModel, withTier: Bool = true)
     default: break
     }
     if let reason = result.status.reason { return (reason, false) }
+    if result.selectable {
+        let picked = model.pickedTargets[result.id]?.count ?? 0
+        let text = picked > 0 ? "\(picked) of \(result.targets.count) picked" : "\(ByteFormat.string(result.bytes)) · pick entries"
+        return (text, false)
+    }
     let size = (result.isUpperBound ? "up to " : "") + ByteFormat.string(result.bytes)
     return (withTier ? "\(size) · \(result.item.risk.title)" : size, false)
 }
@@ -27,7 +32,11 @@ struct CacheCard: View {
     let largest: Int64
     let open: () -> Void
 
-    private var isSelected: Bool { row.result.map(model.isChecked) ?? false }
+    private var isSelected: Bool {
+        guard let result = row.result else { return false }
+        if result.selectable { return !(model.pickedTargets[result.id] ?? []).isEmpty }
+        return model.isChecked(result)
+    }
     private var isWorking: Bool { row.result == nil || row.isLoading || model.cleaning?.active.contains(row.id) == true }
 
     var body: some View {
@@ -106,6 +115,8 @@ struct CacheCard: View {
     }
 
     private func toggle() {
+        // Items whose entries are picked one by one open their detail instead.
+        if row.result?.selectable == true { return open() }
         guard let result = row.result, model.isCheckable(result), model.cleaning == nil else { return }
         model.setChecked(result, !isSelected)
     }
@@ -114,6 +125,7 @@ struct CacheCard: View {
 /// The biggest cache in view, full width, with its own erase button.
 struct FeaturedCacheCard: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.sweepAccent) private var accent
     let result: ScanResult
     let open: () -> Void
     let erase: () -> Void
@@ -148,7 +160,7 @@ struct FeaturedCacheCard: View {
                 .help("Erase \(result.item.name) now")
         }
         .padding(14)
-        .nightCard(glow: isSelected ? Night.blue : nil)
+        .nightCard(glow: isSelected ? accent : nil)
         .contentShape(RoundedRectangle(cornerRadius: Night.cardRadius, style: .continuous))
         .onTapGesture {
             guard model.isCheckable(result), model.cleaning == nil else { return }
@@ -166,6 +178,7 @@ struct FeaturedCacheCard: View {
 
 /// One of the five presets at the top, like a lighting scene.
 struct PresetTile: View {
+    @Environment(\.sweepAccent) private var accent
     let preset: CleanPreset
     let isActive: Bool
     let action: () -> Void
@@ -186,9 +199,9 @@ struct PresetTile: View {
                 let shape = RoundedRectangle(cornerRadius: Night.tileRadius, style: .continuous)
                 if isActive {
                     shape
-                        .fill(LinearGradient(colors: [Night.blue.opacity(0.45), Night.blue.opacity(0.18)], startPoint: .top, endPoint: .bottom))
-                        .overlay(shape.strokeBorder(Night.blueLight.opacity(0.7), lineWidth: 1))
-                        .shadow(color: Night.blue.opacity(0.4), radius: 10, y: 3)
+                        .fill(LinearGradient(colors: [accent.opacity(0.45), accent.opacity(0.18)], startPoint: .top, endPoint: .bottom))
+                        .overlay(shape.strokeBorder(accent.lightened(0.3).opacity(0.7), lineWidth: 1))
+                        .shadow(color: accent.opacity(0.4), radius: 10, y: 3)
                 } else {
                     shape.fill(Night.card).overlay(shape.strokeBorder(Night.stroke, lineWidth: 1))
                 }

@@ -273,7 +273,8 @@ final class HUDController {
             panel.hasShadow = false
             panel.ignoresMouseEvents = true
             panel.collectionBehavior = [.canJoinAllSpaces, .transient]
-            panel.contentView = NSHostingView(rootView: HUDView().environment(AppModel.shared).tint(AppModel.shared.accent))
+            panel.contentView = NSHostingView(rootView: HUDView().environment(AppModel.shared)
+                .environment(\.sweepAccent, AppModel.shared.accent).tint(AppModel.shared.accent))
             self.panel = panel
         }
         guard let panel, let screen = NSScreen.main else { return }

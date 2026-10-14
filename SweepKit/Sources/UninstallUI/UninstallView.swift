@@ -44,7 +44,7 @@ public struct UninstallView: View {
             }
         }
         .frame(minWidth: 720, minHeight: 440)
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(Night.backdrop)
         .task { await model.loadIfNeeded() }
         .onChange(of: model.tab) { model.tabChanged() }
         .sheet(isPresented: $model.isConfirming) {

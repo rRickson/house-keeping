@@ -5,6 +5,7 @@ import SwiftUI
 /// One cache up close: its size as a big number, a slider, and four facts.
 struct CacheDetailView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.sweepAccent) private var accent
     let id: String
     let back: () -> Void
     @State private var confirmCaution = false
@@ -55,9 +56,9 @@ struct CacheDetailView: View {
                     .contentTransition(.numericText())
                 Text(parts.unit)
                     .font(.title2.weight(.medium))
-                    .foregroundStyle(Night.blueLight)
+                    .foregroundStyle(accent.lightened(0.3))
                 Spacer()
-                selectionSwitch(result)
+                if !result.selectable { selectionSwitch(result) }
             }
             .animation(.sweep, value: result.bytes)
 
@@ -68,7 +69,11 @@ struct CacheDetailView: View {
                     .padding(.top, -12)
             }
 
-            slider(result)
+            if result.selectable {
+                entryPicker(result)
+            } else {
+                slider(result)
+            }
 
             // Four facts, like the controls under a device.
             HStack(spacing: 8) {
@@ -94,7 +99,10 @@ struct CacheDetailView: View {
         .padding(.top, 4)
         .padding(.bottom, 12)
         .confirmationDialog("Erase \(result.item.name)?", isPresented: $confirmCaution) {
-            Button("Erase \(ByteFormat.string(result.bytes))") { model.clean([CleanSelection(result)], source: "menubar") }
+            let picked = model.pickedTargets[result.id]
+            Button("Erase \(ByteFormat.string(result.bytes(for: result.selectable ? picked : nil)))") {
+                model.clean([CleanSelection(result, targetIDs: result.selectable ? picked : nil)], source: "menubar")
+            }
         } message: {
             Text(result.item.note ?? RiskTier.caution.explanation)
         }
@@ -163,6 +171,55 @@ struct CacheDetailView: View {
         }
     }
 
+    /// Ask-tier items: every entry with its own checkbox, biggest first.
+    private func entryPicker(_ result: ScanResult) -> some View {
+        let picked = model.pickedTargets[result.id] ?? []
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("\(picked.count) of \(result.targets.count) picked")
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(Night.text)
+                Text("· \(ByteFormat.string(result.bytes(for: picked)))")
+                    .font(.callout)
+                    .foregroundStyle(Night.secondary)
+                Spacer()
+                NightCapsuleButton(title: "None", isOn: picked.isEmpty) { model.pickedTargets[result.id] = [] }
+            }
+            ScrollView {
+                VStack(spacing: 2) {
+                    ForEach(result.targets) { target in
+                        let isOn = picked.contains(target.id)
+                        HStack(spacing: 10) {
+                            Image(systemName: isOn ? "checkmark.circle.fill" : "circle")
+                                .foregroundStyle(isOn ? accent : Night.tertiary)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(target.label).foregroundStyle(Night.text).lineLimit(1).truncationMode(.middle)
+                                if let detail = target.detail ?? target.lastModified?.relativeDescription {
+                                    Text(detail).font(.caption).foregroundStyle(Night.tertiary)
+                                }
+                            }
+                            Spacer()
+                            Text(ByteFormat.string(target.bytes)).monospacedDigit().foregroundStyle(Night.secondary)
+                        }
+                        .font(.callout)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(isOn ? accent.opacity(0.14) : Color.clear, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            var set = picked
+                            if !set.insert(target.id).inserted { set.remove(target.id) }
+                            model.pickedTargets[result.id] = set
+                        }
+                    }
+                }
+            }
+            .frame(maxHeight: 220)
+            .padding(6)
+            .nightCard(radius: Night.tileRadius)
+        }
+    }
+
     // MARK: Helpers
 
     private func subtitle(_ result: ScanResult) -> String {
@@ -185,11 +242,13 @@ struct CacheDetailView: View {
     }
 
     private func canErase(_ result: ScanResult) -> Bool {
-        result.status.isReady && result.bytes > 0 && !result.selectable && result.item.risk != .ask && model.cleaning == nil
+        guard result.status.isReady, model.cleaning == nil else { return false }
+        if result.selectable { return !(model.pickedTargets[result.id] ?? []).isEmpty }
+        return result.bytes > 0 && result.item.risk != .ask
     }
 
     private func erase(_ result: ScanResult) {
-        if result.item.risk == .caution {
+        if result.item.risk != .safe || result.selectable {
             confirmCaution = true
         } else {
             model.quickErase(result)
@@ -220,6 +279,7 @@ struct CacheDetailView: View {
 
 /// A thick slider: a blue fill, faint tick marks, and a white handle.
 struct NightSlider: View {
+    @Environment(\.sweepAccent) private var accent
     @Binding var value: Double
     let range: ClosedRange<Double>
     var label: String = ""
@@ -243,7 +303,7 @@ struct NightSlider: View {
                     Spacer()
                 }
                 Capsule()
-                    .fill(LinearGradient(colors: [Night.blue, Night.blueLight], startPoint: .leading, endPoint: .trailing))
+                    .fill(LinearGradient(colors: [accent, accent.lightened(0.3)], startPoint: .leading, endPoint: .trailing))
                     .frame(width: max(x + knob / 2, knob))
                 if isInteractive {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -281,6 +341,7 @@ struct NightSlider: View {
 
 /// One fact under the slider: icon, caption, value.
 private struct FactTile: View {
+    @Environment(\.sweepAccent) private var appAccent
     let symbol: String
     let caption: String
     let value: String
@@ -294,7 +355,7 @@ private struct FactTile: View {
             HStack(alignment: .top) {
                 Image(systemName: symbol)
                     .font(.system(size: 17))
-                    .foregroundStyle(Night.blueLight)
+                    .foregroundStyle(appAccent.lightened(0.3))
                 Spacer()
                 if let accent {
                     Circle().fill(accent).frame(width: 7, height: 7).padding(.top, 4)

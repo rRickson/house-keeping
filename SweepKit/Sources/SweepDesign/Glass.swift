@@ -19,21 +19,20 @@ extension View {
         glassOrMaterial(in: RoundedRectangle(cornerRadius: SweepMetric.panelRadius, style: .continuous))
     }
 
-    /// The primary action style: prominent glass on macOS 26, bordered prominent before.
+    /// The primary action style: the accent capsule.
     public func prominentActionStyle() -> some View {
-        modifier(ProminentActionStyle())
+        buttonStyle(NightProminentButtonStyle())
     }
 
-    /// A secondary glass button on macOS 26, bordered before.
+    /// A quiet capsule for secondary actions.
     public func secondaryActionStyle() -> some View {
-        modifier(SecondaryActionStyle())
+        buttonStyle(NightSecondaryButtonStyle())
     }
 
-    /// A plain card for content: 12-point corners on the control background. Not glass.
+    /// A card for content, in the night style.
     public func sweepCard(padding: CGFloat = 12) -> some View {
         self.padding(padding)
-            .background(Color(nsColor: .controlBackgroundColor), in: RoundedRectangle(cornerRadius: SweepMetric.cardRadius, style: .continuous))
-            .overlay(RoundedRectangle(cornerRadius: SweepMetric.cardRadius, style: .continuous).strokeBorder(.separator.opacity(0.5), lineWidth: 0.5))
+            .nightCard(radius: Night.tileRadius)
     }
 }
 
@@ -64,34 +63,6 @@ private struct GlassOrMaterial<S: Shape>: ViewModifier {
         if let tint { glass = glass.tint(tint) }
         if interactive { glass = glass.interactive() }
         return glass
-    }
-}
-
-private struct ProminentActionStyle: ViewModifier {
-    @Environment(\.sweepSolidControls) private var solidControls
-
-    func body(content: Content) -> some View {
-        if solidControls {
-            content.buttonStyle(.borderedProminent)
-        } else if #available(macOS 26, *) {
-            content.buttonStyle(.glassProminent)
-        } else {
-            content.buttonStyle(.borderedProminent)
-        }
-    }
-}
-
-private struct SecondaryActionStyle: ViewModifier {
-    @Environment(\.sweepSolidControls) private var solidControls
-
-    func body(content: Content) -> some View {
-        if solidControls {
-            content.buttonStyle(.bordered)
-        } else if #available(macOS 26, *) {
-            content.buttonStyle(.glass)
-        } else {
-            content.buttonStyle(.bordered)
-        }
     }
 }
 

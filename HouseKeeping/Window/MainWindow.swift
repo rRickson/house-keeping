@@ -67,9 +67,11 @@ struct MainWindow: View {
         } detail: {
             detail
                 .frame(minWidth: 680, minHeight: 520)
-                .background(Color(nsColor: .windowBackgroundColor))
+                .background(Night.backdrop.ignoresSafeArea())
         }
         .navigationTitle(section?.title ?? "House Keeping")
+        // The night look is dark whatever the system appearance is.
+        .environment(\.colorScheme, .dark)
         .onAppear {
             // A menu bar app has no Dock icon until its window is open.
             NSApp.setActivationPolicy(.regular)

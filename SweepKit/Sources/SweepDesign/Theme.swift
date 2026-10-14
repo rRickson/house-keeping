@@ -10,7 +10,7 @@ public enum SweepMetric {
 }
 
 public enum SweepAccent: String, CaseIterable, Identifiable, Sendable {
-    case mint, teal, blue, indigo, purple, pink, orange, green
+    case blue, mint, teal, indigo, purple, pink, orange, green
 
     public var id: String { rawValue }
     public var title: String { rawValue.capitalized }
@@ -19,7 +19,7 @@ public enum SweepAccent: String, CaseIterable, Identifiable, Sendable {
         switch self {
         case .mint: .mint
         case .teal: .teal
-        case .blue: .blue
+        case .blue: Night.blue
         case .indigo: .indigo
         case .purple: .purple
         case .pink: .pink
@@ -28,7 +28,7 @@ public enum SweepAccent: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    public init(name: String) { self = SweepAccent(rawValue: name) ?? .mint }
+    public init(name: String) { self = SweepAccent(rawValue: name) ?? .blue }
 }
 
 extension RiskTier {

@@ -26,6 +26,7 @@ struct SweepApp: App {
         MenuBarExtra {
             PopoverView()
                 .environment(model)
+                .environment(\.sweepAccent, model.accent)
                 .tint(model.accent)
         } label: {
             MenuBarLabel(model: model)
@@ -35,7 +36,9 @@ struct SweepApp: App {
         Window("House Keeping", id: "main") {
             MainWindow()
                 .environment(model)
+                .environment(\.sweepAccent, model.accent)
                 .tint(model.accent)
+                .preferredColorScheme(.dark)
         }
         .defaultSize(width: 1080, height: 720)
         .windowResizability(.contentMinSize)

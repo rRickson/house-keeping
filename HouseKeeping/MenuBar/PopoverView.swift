@@ -12,6 +12,9 @@ struct PopoverView: View {
     @State private var cautionToConfirm: [ScanResult] = []
     @State private var showCautionSheet = false
 
+    /// Wider than a menu, so names fit and the selection summary has room.
+    static let width: CGFloat = 430
+
     /// - Parameter detail: a catalog id to open straight on its detail (used for screenshots).
     init(detail: String? = nil) {
         _detailID = State(initialValue: detail)
@@ -21,7 +24,7 @@ struct PopoverView: View {
         VStack(spacing: 0) {
             ZStack(alignment: .top) {
                 PopoverHero(isBusy: model.isBusy)
-                    .frame(height: detailID == nil ? 176 : 200)
+                    .frame(height: detailID == nil ? 158 : 200)
                 header
                     .padding(.horizontal, 16)
                     .padding(.top, 14)
@@ -35,7 +38,7 @@ struct PopoverView: View {
             }
             footer
         }
-        .frame(width: SweepMetric.popoverWidth)
+        .frame(width: Self.width)
         .background(Night.background)
         .environment(\.colorScheme, .dark)
         .overlay { ParticleSweep(trigger: model.banner?.id).tint(Night.badge) }
@@ -116,7 +119,7 @@ struct PopoverView: View {
     // MARK: Main
 
     private var main: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 8) {
                 ForEach(CleanPreset.allCases) { preset in
                     PresetTile(preset: preset, isActive: model.activePreset == preset) {
@@ -125,6 +128,8 @@ struct PopoverView: View {
                 }
             }
             .disabled(model.cleaning != nil)
+
+            SelectionSummary()
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 4) {
@@ -146,8 +151,13 @@ struct PopoverView: View {
                     .font(.callout)
                     .foregroundStyle(Night.secondary)
                 Spacer()
-                NightCapsuleButton(title: "All") { withAnimation(.sweep) { model.setAll(true, in: filter) } }
-                NightCapsuleButton(title: "None") { withAnimation(.sweep) { model.setAll(false, in: filter) } }
+                // Lit when they describe the selection: All when everything in view is selected, None when nothing is.
+                NightCapsuleButton(title: "All", isOn: checkableInView > 0 && selectedInView == checkableInView) {
+                    withAnimation(.sweep) { model.setAll(true, in: filter) }
+                }
+                NightCapsuleButton(title: "None", isOn: checkableInView > 0 && selectedInView == 0) {
+                    withAnimation(.sweep) { model.setAll(false, in: filter) }
+                }
             }
             .disabled(model.cleaning != nil)
 
@@ -213,7 +223,7 @@ struct PopoverView: View {
             .padding(.vertical, 4)
             .padding(.bottom, 8)
         }
-        .frame(maxHeight: 330)
+        .frame(maxHeight: 360)
         .scrollBounceBehavior(.basedOnSize)
     }
 

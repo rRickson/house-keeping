@@ -78,12 +78,15 @@ enum Snapshotter {
         let root = view
             .environment(model)
             .environment(\.sweepSolidControls, true)
+            .environment(\.sweepAccent, model.accent)
+            .environment(\.colorScheme, .dark)
             .tint(model.accent)
             .frame(width: size?.width, height: size?.height)
-            .background(Color(nsColor: .windowBackgroundColor))
+            .background(Night.backdrop)
         let hosting = NSHostingView(rootView: root)
         let window = NSWindow(contentRect: NSRect(origin: .zero, size: size ?? hosting.fittingSize),
                               styleMask: [.borderless], backing: .buffered, defer: false)
+        // House Keeping is always dark; the light/dark pairs check nothing leaks the system appearance.
         window.appearance = NSAppearance(named: appearance)
         window.contentView = hosting
         window.setContentSize(size ?? hosting.fittingSize)

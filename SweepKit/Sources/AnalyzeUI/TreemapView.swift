@@ -286,7 +286,7 @@ private struct LiftedTile: View {
         }
         .frame(width: rect.width, height: rect.height)
         // Tiles are tints, so the lifted copy needs the plain background under it.
-        .background(Color(nsColor: .controlBackgroundColor), in: shape)
+        .background(Night.card, in: shape)
         .clipShape(shape)
         .overlay(shape.strokeBorder(tile.category.color.opacity(0.9), lineWidth: 1.5))
         .shadow(color: .black.opacity(scheme == .dark ? 0.5 : 0.22), radius: 8, y: 3)

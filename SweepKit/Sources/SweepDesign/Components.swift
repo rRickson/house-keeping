@@ -35,7 +35,7 @@ public struct SizeText: View {
     }
 }
 
-/// The glass capsule that floats at the bottom of a tool: "Clean 12 items · 8.2 GB".
+/// The glowing capsule that floats at the bottom of a tool: "Clean 12 items · 8.2 GB".
 public struct FloatingActionBar<Accessory: View>: View {
     private let title: String
     private let bytes: Int64?
@@ -69,13 +69,13 @@ public struct FloatingActionBar<Accessory: View>: View {
             Button(action: action) {
                 HStack(spacing: 6) {
                     if isBusy {
-                        ProgressView().controlSize(.small)
+                        ProgressView().controlSize(.small).tint(.white)
                     } else {
                         Image(systemName: systemImage)
                     }
                     Text(title)
                     if let bytes {
-                        Text("·").foregroundStyle(.secondary)
+                        Text("·").opacity(0.7)
                         SizeText(bytes, font: .system(.body, design: .rounded).weight(.semibold))
                     }
                 }
@@ -86,11 +86,8 @@ public struct FloatingActionBar<Accessory: View>: View {
             .controlSize(.large)
             .disabled(!isEnabled || isBusy)
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 8)
-        .glassOrMaterial(in: Capsule(), interactive: true)
-        .shadow(color: .black.opacity(0.12), radius: 12, y: 4)
-        .padding(.bottom, 16)
+        .shadow(color: .black.opacity(0.5), radius: 18, y: 8)
+        .padding(.bottom, 18)
     }
 }
 
@@ -142,6 +139,7 @@ extension ToolHeader where Trailing == EmptyView {
 
 /// Used and free space of a volume as one rounded bar. The fill slides when the value changes.
 public struct DiskBar: View {
+    @Environment(\.sweepAccent) private var accent
     private let space: DiskSpace
     private let height: CGFloat
 
@@ -154,9 +152,9 @@ public struct DiskBar: View {
         GeometryReader { proxy in
             let fraction = space.total > 0 ? Double(space.used) / Double(space.total) : 0
             ZStack(alignment: .leading) {
-                Capsule().fill(.quaternary)
+                Capsule().fill(Color.white.opacity(0.08))
                 Capsule()
-                    .fill(.tint)
+                    .fill(LinearGradient(colors: [accent, accent.lightened(0.3)], startPoint: .leading, endPoint: .trailing))
                     .frame(width: max(height, proxy.size.width * fraction))
             }
         }

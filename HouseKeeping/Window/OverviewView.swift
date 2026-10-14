@@ -36,52 +36,57 @@ struct OverviewView: View {
 
     // MARK: Disk and primary action
 
+    /// The night sky with the witch, and the disk and the main action over it.
     private var hero: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(alignment: .lastTextBaseline) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(model.volumeName).font(.title2.weight(.semibold))
-                    Text("\(ByteFormat.string(model.disk.used)) used of \(ByteFormat.string(model.disk.total))")
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
+        ZStack(alignment: .bottomLeading) {
+            PopoverHero(isBusy: model.isBusy)
+            VStack(alignment: .leading, spacing: 14) {
+                HStack(alignment: .lastTextBaseline) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(model.volumeName).font(.title2.weight(.semibold)).foregroundStyle(Night.text)
+                        Text("\(ByteFormat.string(model.disk.used)) used of \(ByteFormat.string(model.disk.total))")
+                            .font(.callout)
+                            .foregroundStyle(Night.secondary)
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing, spacing: 0) {
+                        SizeText(model.disk.free, font: .system(size: 40, weight: .light), unitFont: .system(.title3))
+                            .foregroundStyle(Night.text)
+                        Text("free").font(.callout).foregroundStyle(Night.secondary)
+                    }
                 }
-                Spacer()
-                VStack(alignment: .trailing, spacing: 0) {
-                    SizeText(model.disk.free, font: .system(size: 34, weight: .semibold, design: .rounded),
-                             unitFont: .system(.title3, design: .rounded))
-                    Text("free").font(.callout).foregroundStyle(.secondary)
+                DiskBar(model.disk, height: 8)
+                HStack(spacing: 16) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(alignment: .firstTextBaseline, spacing: 6) {
+                            SizeText(safeBytes, font: .system(size: 28, weight: .light), unitFont: .system(.callout))
+                                .foregroundStyle(Night.text)
+                            Text("in safe developer caches").foregroundStyle(Night.secondary)
+                        }
+                        Text(heroDetail).font(.callout).foregroundStyle(Night.secondary)
+                    }
+                    Spacer()
+                    if let cleaning = model.cleaning {
+                        ProgressView(value: cleaning.fraction).frame(width: 140).tint(.white)
+                        Button("Cancel") { model.cancelClean() }.secondaryActionStyle()
+                    } else {
+                        Button {
+                            model.clean(safeSelection, source: "window")
+                        } label: {
+                            Label("Clean All Safe", systemImage: "sparkles")
+                        }
+                        .prominentActionStyle()
+                        .disabled(safeSelection.isEmpty)
+                    }
                 }
             }
-            DiskBar(model.disk, height: 10)
-
-            HStack(spacing: 16) {
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(alignment: .firstTextBaseline, spacing: 6) {
-                        SizeText(safeBytes, font: .system(.title, design: .rounded).weight(.semibold),
-                                 unitFont: .system(.title3, design: .rounded))
-                        Text("in safe developer caches").foregroundStyle(.secondary)
-                    }
-                    Text(heroDetail).font(.callout).foregroundStyle(.secondary)
-                }
-                Spacer()
-                if let cleaning = model.cleaning {
-                    ProgressView(value: cleaning.fraction).frame(width: 140)
-                    Button("Cancel") { model.cancelClean() }
-                } else {
-                    Button {
-                        model.clean(safeSelection, source: "window")
-                    } label: {
-                        Label("Clean All Safe", systemImage: "sparkles")
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                    }
-                    .prominentActionStyle()
-                    .controlSize(.large)
-                    .disabled(safeSelection.isEmpty)
-                }
-            }
+            .padding(22)
+            .background(LinearGradient(colors: [.clear, Night.background.opacity(0.75), Night.background.opacity(0.92)],
+                                       startPoint: .top, endPoint: .bottom))
         }
-        .sweepCard(padding: 20)
+        .frame(height: 320)
+        .clipShape(RoundedRectangle(cornerRadius: Night.cardRadius, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: Night.cardRadius, style: .continuous).strokeBorder(Night.stroke, lineWidth: 1))
     }
 
     private var heroDetail: String {

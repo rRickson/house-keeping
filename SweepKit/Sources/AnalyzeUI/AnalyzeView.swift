@@ -29,7 +29,7 @@ public struct AnalyzeView: View {
             content
         }
         .frame(minWidth: 720, minHeight: 480)
-        .background(Color(nsColor: .windowBackgroundColor))
+        .background(Night.backdrop)
         .onAppear { model.load() }
         .confirmationDialog(
             trashTitle,
@@ -112,7 +112,7 @@ public struct AnalyzeView: View {
                 }
                 .padding(4)
                 .background(
-                    Color(nsColor: .controlBackgroundColor),
+                    Night.card,
                     in: RoundedRectangle(cornerRadius: SweepMetric.cardRadius, style: .continuous))
                 .overlay {
                     if tree[model.focus].bytes == 0, tree.unreadableFolders(under: model.focus).isEmpty {

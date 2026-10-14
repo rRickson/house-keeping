@@ -70,8 +70,8 @@ public struct SweepSettings: Codable, Sendable, Equatable {
     public var showMenuBarGraph = false
     /// How long an AI agent session must sit untouched before its history counts as old.
     public var oldSessionDays = 30
-    /// Name of the accent colour: mint, teal, blue, indigo, purple, pink, orange or green.
-    public var accent = "mint"
+    /// Name of the accent colour: blue, mint, teal, indigo, purple, pink, orange or green.
+    public var accent = "blue"
 
     public init() {}
 

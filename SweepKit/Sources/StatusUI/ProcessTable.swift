@@ -33,7 +33,7 @@ struct ProcessTable: View {
                 }
             }
         }
-        .background(Color(nsColor: .controlBackgroundColor))
+        .background(Night.card)
     }
 
     // MARK: Header
