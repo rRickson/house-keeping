@@ -272,7 +272,7 @@
 				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find build artifacts in your projects.";
 				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find build artifacts in your projects.";
 				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find old installers.";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Cache rules informed by Mole (MIT).";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "MIT licence. Cache rules informed by Mole (MIT).";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rickson.housekeeping;
@@ -301,7 +301,7 @@
 				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find build artifacts in your projects.";
 				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find build artifacts in your projects.";
 				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find old installers.";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Cache rules informed by Mole (MIT).";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "MIT licence. Cache rules informed by Mole (MIT).";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.rickson.housekeeping;

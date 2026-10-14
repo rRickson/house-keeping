@@ -412,7 +412,7 @@ private struct AdvancedSettings: View {
                 Text("Drop a JSON rule into catalog.d to add a tool without rebuilding House Keeping.")
             }
             Section("About") {
-                Text("House Keeping is a personal build: no licence, no payments, no telemetry, no update server. Cache rules and safety lists are informed by Mole, the MIT-licensed CLI by tw93.")
+                Text("House Keeping is open source under the MIT licence: no payments, no telemetry, no update server. Cache rules and safety lists are informed by Mole, the MIT-licensed CLI by tw93.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
             }

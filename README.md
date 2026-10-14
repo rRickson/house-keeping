@@ -236,4 +236,4 @@ Kivo. House Keeping has its own Swift engine and shares no code with it.
 
 ## License
 
-No licence has been chosen yet. Until a `LICENSE` file is added, the code is not licensed for reuse.
+[MIT](LICENSE). Use it, change it, ship it; keep the copyright notice.
