@@ -31,9 +31,9 @@ public struct SweepContext: Sendable {
     public var runner: any CommandRunning
     public var processes: any ProcessListing
     public var trash: any Trashing
-    /// `~/Library/Application Support/Sweep`
+    /// `~/Library/Application Support/House Keeping`
     public var supportDirectory: URL
-    /// `~/Library/Logs/Sweep`
+    /// `~/Library/Logs/House Keeping`
     public var logDirectory: URL
     /// True when the context points at a fixture home instead of the real one.
     public var isFixture: Bool
@@ -53,16 +53,18 @@ public struct SweepContext: Sendable {
         self.runner = runner
         self.processes = processes
         self.trash = trash
-        self.supportDirectory = supportDirectory ?? home.appendingPathComponent("Library/Application Support/Sweep")
-        self.logDirectory = logDirectory ?? home.appendingPathComponent("Library/Logs/Sweep")
+        self.supportDirectory = supportDirectory ?? home.appendingPathComponent("Library/Application Support/House Keeping")
+        self.logDirectory = logDirectory ?? home.appendingPathComponent("Library/Logs/House Keeping")
         self.isFixture = isFixture
     }
 
-    /// The context for the real machine. Setting `SWEEP_HOME` switches to a
-    /// fixture home with no tools, which is how Sweep is exercised safely.
+    /// The context for the real machine. Setting `HOUSEKEEPING_HOME` switches to a
+    /// fixture home with no tools, which is how House Keeping is exercised safely.
     public static func live() -> SweepContext {
         let environment = ProcessInfo.processInfo.environment
-        if let fixture = environment["SWEEP_HOME"], !fixture.isEmpty {
+        // SWEEP_HOME is the variable's old name. It stays honoured so an old command
+        // line can never end up running against the real home by accident.
+        if let fixture = environment["HOUSEKEEPING_HOME"] ?? environment["SWEEP_HOME"], !fixture.isEmpty {
             return .fixture(home: URL(fileURLWithPath: fixture))
         }
         let home = FileManager.default.homeDirectoryForCurrentUser

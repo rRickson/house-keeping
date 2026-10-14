@@ -98,7 +98,7 @@ import Testing
     @Test func theFixtureHomeItselfIsRefused() async throws {
         let home = fixture.home.path
         // The refusal itself is written to the ledger, inside the fixture's Library/Logs.
-        func userFiles() -> Set<String> { fixture.files().filter { !$0.contains("/Library/Logs/Sweep/") } }
+        func userFiles() -> Set<String> { fixture.files().filter { !$0.contains("/Library/Logs/House Keeping/") } }
         let files = userFiles()
         #expect(service.trashDenyReason(for: home) != nil)
 

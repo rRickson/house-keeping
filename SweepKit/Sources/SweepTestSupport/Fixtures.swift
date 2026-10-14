@@ -130,7 +130,7 @@ public struct GitOnlyRunner: CommandRunning {
 
     @discardableResult
     public func git(_ arguments: String..., in directory: String) async -> CommandResult {
-        await run("git", ["-C", directory, "-c", "user.name=Sweep Tests", "-c", "user.email=tests@example.com",
+        await run("git", ["-C", directory, "-c", "user.name=House Keeping Tests", "-c", "user.email=tests@example.com",
                           "-c", "commit.gpgsign=false", "-c", "init.defaultBranch=main"] + arguments, timeout: 30)
     }
 }

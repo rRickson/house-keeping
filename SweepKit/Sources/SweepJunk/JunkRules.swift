@@ -71,7 +71,7 @@ struct JunkRules: Sendable {
     var downloads: String { home + "/Downloads" }
     var backups: String { home + "/Library/Application Support/MobileSync/Backup" }
     var trash: String { home + "/.Trash" }
-    var sweepLogs: String { logs + "/Sweep" }
+    var sweepLogs: String { logs + "/House Keeping" }
 
     /// The folders whose contents a category may delete.
     func containers(for category: JunkCategory) -> [String] {
@@ -103,7 +103,7 @@ struct JunkRules: Sendable {
 
     // MARK: Ownership
 
-    /// Folders in `~/Library/Caches` that Sweep's Dev Caches tool cleans.
+    /// Folders in `~/Library/Caches` that House Keeping's Dev Caches tool cleans.
     static let devCacheFolders: Set<String> = [
         "homebrew", "pip", "yarn", "node-gyp", "electron", "electron-builder", "ms-playwright", "cypress", "claude-cli-nodejs",
         "pypoetry", "pipenv", "cocoapods", "org.swift.swiftpm", "org.carthage.carthagekit", "jetbrains",
@@ -117,9 +117,9 @@ struct JunkRules: Sendable {
         "com.apple.findmy.fmfcore",
     ]
 
-    /// Sweep never lists its own cache.
+    /// House Keeping never lists its own cache.
     static let ownFolders: Set<String> = {
-        var names: Set<String> = ["com.rickson.sweep", "sweep"]
+        var names: Set<String> = ["com.rickson.housekeeping", "house keeping", "housekeeping", "sweep"]
         if let id = Bundle.main.bundleIdentifier { names.insert(id.lowercased()) }
         return names
     }()
@@ -155,7 +155,7 @@ struct JunkRules: Sendable {
         if isDevOwned(folder) { return "cleaned by Dev Caches" }
         if isBrowserOwned(folder) { return "a browser cache" }
         if Self.systemManagedFolders.contains(name) { return "managed by macOS" }
-        if Self.ownFolders.contains(name) { return "Sweep's own cache" }
+        if Self.ownFolders.contains(name) { return "House Keeping's own cache" }
         return nil
     }
 
@@ -170,7 +170,7 @@ struct JunkRules: Sendable {
         return nil
     }
 
-    /// True for anything that is, holds or sits inside the folder with Sweep's ledger.
+    /// True for anything that is, holds or sits inside the folder with House Keeping's ledger.
     func touchesLedger(_ path: String) -> Bool {
         for protected in Set([sweepLogs, ledgerDirectory]) {
             if SafetyGuard.isSame(path, orInside: protected) || SafetyGuard.isInside(protected, path) { return true }
@@ -204,7 +204,7 @@ struct JunkRules: Sendable {
         case .logs:
             guard parent == logs else { return outside }
             if name == "DiagnosticReports" { return "listed under Crash reports" }
-            if touchesLedger(path) { return "holds Sweep's own history" }
+            if touchesLedger(path) { return "holds House Keeping's own history" }
             return nil
         case .crashReports:
             return parent == crashReports ? nil : outside

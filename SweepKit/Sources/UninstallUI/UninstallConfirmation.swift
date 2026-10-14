@@ -88,7 +88,7 @@ struct UninstallConfirmation: View {
             parts.append("Homebrew runs \(command.joined(separator: " ")).")
         }
         if model.chosenItems.contains(where: { $0.needsAdmin && $0.route == .sweep }) {
-            parts.append("Items that belong to the system are removed by Sweep's helper.")
+            parts.append("Items that belong to the system are removed by House Keeping's helper.")
         }
         return parts.isEmpty ? nil : parts.joined(separator: " ")
     }

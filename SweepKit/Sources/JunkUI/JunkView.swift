@@ -133,7 +133,7 @@ public struct JunkView: View {
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 4) {
                 Text("Full Disk Access is off").font(.headline)
-                Text("Without it, Sweep can't look at Safari, Mail, iOS backups or the Trash. Everything else works as usual.")
+                Text("Without it, House Keeping can't look at Safari, Mail, iOS backups or the Trash. Everything else works as usual.")
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)

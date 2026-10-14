@@ -3,12 +3,12 @@ import os
 import SweepKit
 
 /// The helper's XPC front door: checks who is calling, then hands the task
-/// name to `PrivilegedTaskRunner`. `SweepHelper/main.swift` only starts it.
+/// name to `PrivilegedTaskRunner`. `HouseKeepingHelper/main.swift` only starts it.
 public final class HelperService: NSObject, NSXPCListenerDelegate, HelperXPCProtocol, @unchecked Sendable {
     private let runner: PrivilegedTaskRunner
     private let verifier: CallerVerifier
     /// One task at a time.
-    private let work = DispatchQueue(label: "com.rickson.sweep.helper.work")
+    private let work = DispatchQueue(label: "com.rickson.housekeeping.helper.work")
     /// Open connections plus tasks in flight; the helper exits when this stays at zero.
     private let activity = Locked(0)
     private let idleExitAfter: TimeInterval?
@@ -16,7 +16,7 @@ public final class HelperService: NSObject, NSXPCListenerDelegate, HelperXPCProt
 
     /// - Parameter idleExitAfter: seconds without a connection before the
     ///   helper exits. launchd starts it again on the next request, so nothing
-    ///   of Sweep's stays running as root in the background.
+    ///   of House Keeping's stays running as root in the background.
     public init(runner: PrivilegedTaskRunner = PrivilegedTaskRunner(), verifier: CallerVerifier, idleExitAfter: TimeInterval? = 30) {
         self.runner = runner
         self.verifier = verifier
@@ -27,7 +27,7 @@ public final class HelperService: NSObject, NSXPCListenerDelegate, HelperXPCProt
 
     public func listener(_ listener: NSXPCListener, shouldAcceptNewConnection connection: NSXPCConnection) -> Bool {
         guard verifier.isTrusted(connection) else {
-            log.error("Rejected a connection from pid \(connection.processIdentifier, privacy: .public): not Sweep")
+            log.error("Rejected a connection from pid \(connection.processIdentifier, privacy: .public): not House Keeping")
             scheduleIdleCheck()
             return false
         }
@@ -73,7 +73,7 @@ public final class HelperService: NSObject, NSXPCListenerDelegate, HelperXPCProt
     }
 }
 
-/// What `SweepHelper/main.swift` calls.
+/// What `HouseKeepingHelper/main.swift` calls.
 public enum HelperMain {
     /// Starts the Mach service and never returns.
     ///

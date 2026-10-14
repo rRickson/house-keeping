@@ -54,7 +54,7 @@ public struct UninstallEnvironment: Sendable {
     /// Mac and not just in the applications folders (Launch Services). Keeps
     /// leftovers of apps that live elsewhere from being claimed or called orphans.
     public var registeredAppPaths: @Sendable (String) -> [String]
-    /// Sweep's own bundle identifiers; hidden from the list and never an orphan.
+    /// House Keeping's own bundle identifiers; hidden from the list and never an orphan.
     public var ownBundleIDs: Set<String>
     /// A leftover changed more recently than this is still in use by something
     /// and is never called an orphan.
@@ -84,7 +84,7 @@ public struct UninstallEnvironment: Sendable {
         self.orphanMinimumAge = orphanMinimumAge
     }
 
-    public static let sweepBundleIDs: Set<String> = ["com.rickson.sweep", "com.rickson.sweep.helper"]
+    public static let sweepBundleIDs: Set<String> = ["com.rickson.housekeeping", "com.rickson.housekeeping.helper"]
 
     /// The environment for a context: the real machine, or, for a fixture home,
     /// only `<home>/Applications` with no Dock, no quitting and no system folders.

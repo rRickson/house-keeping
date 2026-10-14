@@ -315,7 +315,7 @@ private struct RetryBadge: View {
         .buttonStyle(.bordered)
         .controlSize(.small)
         .disabled(isBusy)
-        .help("Sweep could not read “\(name)”. Click to try again.")
+        .help("House Keeping could not read “\(name)”. Click to try again.")
         .accessibilityLabel("Retry reading \(name)")
     }
 }

@@ -40,11 +40,11 @@ public final class HelperSettingsModel {
     public var explanation: String {
         switch status {
         case .enabled:
-            "Admin tasks run without a password prompt. The helper accepts only Sweep's fixed list of tasks, only from Sweep, and quits when it is idle."
+            "Admin tasks run without a password prompt. The helper accepts only House Keeping's fixed list of tasks, only from House Keeping, and quits when it is idle."
         case .requiresApproval:
-            "Turn Sweep on under Allow in the Background in System Settings to finish."
+            "Turn House Keeping on under Allow in the Background in System Settings to finish."
         case .notRegistered:
-            "Without the helper, admin tasks ask for your password each time. With it, macOS asks you to approve Sweep once in Login Items."
+            "Without the helper, admin tasks ask for your password each time. With it, macOS asks you to approve House Keeping once in Login Items."
         case .notFound:
             "This build does not include the helper. Admin tasks ask for your password each time."
         }
@@ -129,7 +129,7 @@ public struct HelperSettingsView: View {
         }
         .sweepAnimation(value: model.status)
         .onAppear { model.refresh() }
-        // Approval happens in System Settings; pick it up when Sweep comes back.
+        // Approval happens in System Settings; pick it up when House Keeping comes back.
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             model.refresh()
         }

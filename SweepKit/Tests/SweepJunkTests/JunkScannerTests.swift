@@ -209,13 +209,13 @@ import Testing
 
     @Test func sweepsOwnLogFolderIsNeverListed() async throws {
         let fixture = try FixtureHome()
-        try fixture.write("Library/Logs/Sweep/operations.jsonl", bytes: 64 * 1024)
-        try fixture.write("Library/Logs/Sweep/archive/2025.jsonl", bytes: 8192)
+        try fixture.write("Library/Logs/House Keeping/operations.jsonl", bytes: 64 * 1024)
+        try fixture.write("Library/Logs/House Keeping/archive/2025.jsonl", bytes: 8192)
         try fixture.write("Library/Logs/OtherApp/run.log", bytes: 8192)
 
         let entries = await fixture.scanner().scanCollected()
         #expect(entries.allPaths == [fixture.path("Library/Logs/OtherApp")])
-        #expect(!entries.allPaths.contains { $0.contains("/Library/Logs/Sweep") })
+        #expect(!entries.allPaths.contains { $0.contains("/Library/Logs/House Keeping") })
     }
 
     @Test func crashReportsAreOneEntryAndNotListedAsLogs() async throws {

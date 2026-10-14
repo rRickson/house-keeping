@@ -216,7 +216,7 @@ final class AnalyzeModel {
         }
         if stillUnreadable > 0 {
             let subject = stillUnreadable == 1 ? "1 folder still cannot" : "\(stillUnreadable) folders still cannot"
-            post(Notice(text: "\(subject) be read. Sweep may need Full Disk Access.", succeeded: false))
+            post(Notice(text: "\(subject) be read. House Keeping may need Full Disk Access.", succeeded: false))
         }
         refreshLists()
     }
@@ -306,7 +306,7 @@ final class AnalyzeModel {
             post(Notice(text: "“\(name)” is no longer excluded.", succeeded: true))
         } else {
             service.addExclusion(path)
-            post(Notice(text: "“\(name)” is now excluded. Sweep will never remove it.", succeeded: true))
+            post(Notice(text: "“\(name)” is now excluded. House Keeping will never remove it.", succeeded: true))
         }
     }
 

@@ -86,7 +86,7 @@ public struct RemovalRefusal: Error, Sendable, Equatable {
 
 /// The root side of the helper: turns a task name into fixed work.
 ///
-/// This is the whole of what Sweep can do as root. A task is one of
+/// This is the whole of what House Keeping can do as root. A task is one of
 /// `PrivilegedTask`'s names; the only argument any task takes is a bundle
 /// identifier, which is validated and then used to *look for* files, never as
 /// a path. `root` is `/` in the helper and a temporary folder in tests.

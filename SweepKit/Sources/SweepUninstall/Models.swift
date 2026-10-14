@@ -15,7 +15,7 @@ public struct SecurityVendor: Sendable, Hashable {
 public enum Removability: Sendable, Hashable {
     case removable
     /// Security and antivirus software installs system extensions and kernel
-    /// hooks that only its own uninstaller removes cleanly. Sweep never touches it.
+    /// hooks that only its own uninstaller removes cleanly. House Keeping never touches it.
     case vendorUninstaller(SecurityVendor)
 
     public var isRemovable: Bool { self == .removable }
@@ -72,7 +72,7 @@ public struct InstalledApp: Identifiable, Sendable, Hashable {
     }
 }
 
-/// The places Sweep looks for what an app leaves behind. Only direct children
+/// The places House Keeping looks for what an app leaves behind. Only direct children
 /// of these folders are ever proposed, never the folders themselves.
 public enum LeftoverLocation: String, Sendable, CaseIterable, Hashable, Codable {
     case applicationSupport, caches, preferences, preferencesByHost, logs
@@ -132,7 +132,7 @@ public enum LeftoverLocation: String, Sendable, CaseIterable, Hashable, Codable 
         }
     }
 
-    /// Places Sweep reads when it looks for orphans. Launch agents are left to
+    /// Places House Keeping reads when it looks for orphans. Launch agents are left to
     /// Optimize, which checks whether the program they start still exists.
     static var orphanLocations: [LeftoverLocation] {
         allCases.filter { !$0.isSystem && $0 != .launchAgents }
@@ -146,7 +146,7 @@ public struct UninstallItem: Identifiable, Sendable, Hashable {
         case leftover
     }
 
-    /// Why Sweep believes the path belongs to the app.
+    /// Why House Keeping believes the path belongs to the app.
     public enum Evidence: Sendable, Hashable {
         case bundle
         /// The name is the bundle identifier, or starts with it and a dot.
@@ -161,7 +161,7 @@ public struct UninstallItem: Identifiable, Sendable, Hashable {
 
     /// Who removes the path.
     public enum Route: Sendable, Hashable {
-        /// Sweep's guarded remover.
+        /// House Keeping's guarded remover.
         case sweep
         /// `brew uninstall --zap`; follows the app bundle and cannot be unticked on its own.
         case homebrew
@@ -218,7 +218,7 @@ public struct UninstallPlan: Sendable, Hashable {
     public var packageIDs: [String]
     /// Things worth telling the user that are not paths.
     public var notes: [String]
-    /// False when the cask's zap stanza names a place Sweep protects; Homebrew then removes the app only.
+    /// False when the cask's zap stanza names a place House Keeping protects; Homebrew then removes the app only.
     public var usesZap = true
 
     public init(app: InstalledApp, items: [UninstallItem], packageIDs: [String] = [], notes: [String] = []) {

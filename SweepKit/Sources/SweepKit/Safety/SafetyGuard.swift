@@ -2,7 +2,7 @@ import Darwin
 import Foundation
 
 /// What a path looked like when it was scanned. Compared again right before
-/// deleting, so Sweep never removes something other than what was previewed.
+/// deleting, so House Keeping never removes something other than what was previewed.
 public struct Fingerprint: Sendable, Hashable, Codable {
     public var device: Int32
     public var inode: UInt64

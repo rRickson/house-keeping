@@ -235,9 +235,9 @@ import Testing
 
 @Suite struct HelperBundleTests {
     @Test func namesAgree() {
-        #expect(HelperConstants.appIdentifier == "com.rickson.sweep")
-        #expect(HelperConstants.machServiceName == "com.rickson.sweep.helper")
-        #expect(HelperConstants.daemonPlistName == "com.rickson.sweep.helper.plist")
+        #expect(HelperConstants.appIdentifier == "com.rickson.housekeeping")
+        #expect(HelperConstants.machServiceName == "com.rickson.housekeeping.helper")
+        #expect(HelperConstants.daemonPlistName == "com.rickson.housekeeping.helper.plist")
     }
 
     /// The launchd property list that ships next to the helper's sources.
@@ -248,7 +248,7 @@ import Testing
         let data = try Data(contentsOf: plist)
         let values = try #require(try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any])
         #expect(values["Label"] as? String == HelperConstants.helperIdentifier)
-        #expect(values["BundleProgram"] as? String == "Contents/MacOS/SweepHelper")
+        #expect(values["BundleProgram"] as? String == "Contents/MacOS/HouseKeepingHelper")
         #expect((values["MachServices"] as? [String: Any])?[HelperConstants.machServiceName] as? Bool == true)
         #expect(values["AssociatedBundleIdentifiers"] as? [String] == [HelperConstants.appIdentifier])
         // On demand only: nothing keeps a root process alive in the background.

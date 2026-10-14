@@ -99,7 +99,7 @@ public enum JunkRemoval: Sendable, Hashable {
     case trash
     /// Always deleted for good (emptying the Trash).
     case permanent
-    /// Cleaned by the privileged helper, never deleted by Sweep directly.
+    /// Cleaned by the privileged helper, never deleted by House Keeping directly.
     case helper
 }
 

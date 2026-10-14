@@ -33,7 +33,7 @@ public enum CodeRequirement {
     }
 }
 
-/// Decides whether the process at the other end of an XPC connection is Sweep.
+/// Decides whether the process at the other end of an XPC connection is House Keeping.
 ///
 /// The requirement is derived from the helper's own signature: the caller must
 /// carry the app's identifier and be signed by the same team as the helper.

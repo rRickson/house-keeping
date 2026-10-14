@@ -1,0 +1,394 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		849A3F4C7BD4A5BB20B22201 /* SweepCLI in Frameworks */ = {isa = PBXBuildFile; productRef = 5F0AB4D2ACAB90A57C57D559 /* SweepCLI */; };
+		BE986DBF89A3A1BB0D98688F /* SweepOptimize in Frameworks */ = {isa = PBXBuildFile; productRef = 83DA7928020366089FD45C87 /* SweepOptimize */; };
+		3FC25A2B285FB2771417D19E /* SweepKit in Frameworks */ = {isa = PBXBuildFile; productRef = E4F6844D2B61F2C428F311C9 /* SweepKit */; };
+		B63FB27ED7A6AF7AA30515CF /* SweepKit in Frameworks */ = {isa = PBXBuildFile; productRef = 89A715AB24613C96C121911D /* SweepKit */; };
+		7EBB3319BAB178C49D606DC6 /* SweepDesign in Frameworks */ = {isa = PBXBuildFile; productRef = E6AA6F92C1AD5E50AD68AB8E /* SweepDesign */; };
+		3E955580DC98478844170C47 /* SweepMetrics in Frameworks */ = {isa = PBXBuildFile; productRef = 300E5E1789866E461EE1CD81 /* SweepMetrics */; };
+		BB66905C302F668CED2D3F96 /* SweepJunk in Frameworks */ = {isa = PBXBuildFile; productRef = ACDC58DC08C243E4F816C58D /* SweepJunk */; };
+		E4828859B6610350D36E5C5E /* SweepOptimize in Frameworks */ = {isa = PBXBuildFile; productRef = AE7304348983F9EC520B90F9 /* SweepOptimize */; };
+		F40E50BEDFD62EB1D18A1C43 /* StatusUI in Frameworks */ = {isa = PBXBuildFile; productRef = 59BD621D966CDE756E1070B8 /* StatusUI */; };
+		3779284371FEB67F70832553 /* AnalyzeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 80DE08E7B2B7726C64FCBC67 /* AnalyzeUI */; };
+		D5CC8D605BA2870FC25CD6C3 /* JunkUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4DA838B06229291630914EE3 /* JunkUI */; };
+		028913ECEFE69AFC41918210 /* UninstallUI in Frameworks */ = {isa = PBXBuildFile; productRef = 19F542D252A68555E72BD11D /* UninstallUI */; };
+		EEBEADD716E36F825A51DEBE /* OptimizeUI in Frameworks */ = {isa = PBXBuildFile; productRef = F441ED344F7DBC8F0EA1D839 /* OptimizeUI */; };
+		68E5097A2EEB45EB205EF278 /* housekeeping in Embed Command Line Tool */ = {isa = PBXBuildFile; fileRef = E8EFE77931A14EFACDB12B16 /* housekeeping */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		19D1C70681A59299256A3770 /* HouseKeepingHelper in Embed Helper */ = {isa = PBXBuildFile; fileRef = F29BB038C50127F9FBD2B345 /* HouseKeepingHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5BD77BBC2C5F70028EC36C3B /* com.rickson.housekeeping.helper.plist in Embed Launch Daemon */ = {isa = PBXBuildFile; fileRef = 4EAA17DDD618869302BBB011 /* com.rickson.housekeeping.helper.plist */; };
+		04F85D5AEE19499938016869 /* com.rickson.housekeeping.autoclean.plist in Embed Launch Agent */ = {isa = PBXBuildFile; fileRef = 466DDBF27DAAF75159B3EE53 /* com.rickson.housekeeping.autoclean.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ECD5B3719E07C93476BECE82 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 46F86FAA6BBF9AC94A7E4595 /* Project object */; proxyType = 1; remoteGlobalIDString = E3F94BECA3BF0CBF22A663E8; remoteInfo = HouseKeepingCLI; };
+		ED494BA5BA907E787EE1BE65 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 46F86FAA6BBF9AC94A7E4595 /* Project object */; proxyType = 1; remoteGlobalIDString = 7614A824EB1FF7507F7B4119; remoteInfo = HouseKeepingHelper; };
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F55F2E79D01F9056B0EF088C /* Embed Command Line Tool */ = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = Contents/Helpers; dstSubfolderSpec = 1; files = (
+				68E5097A2EEB45EB205EF278 /* housekeeping in Embed Command Line Tool */,
+			); name = "Embed Command Line Tool"; runOnlyForDeploymentPostprocessing = 0; };
+		E67185D193E9CFF27FE20998 /* Embed Helper */ = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = ""; dstSubfolderSpec = 6; files = (
+				19D1C70681A59299256A3770 /* HouseKeepingHelper in Embed Helper */,
+			); name = "Embed Helper"; runOnlyForDeploymentPostprocessing = 0; };
+		BEC4B3F52B32170C98A5FEB1 /* Embed Launch Daemon */ = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = Contents/Library/LaunchDaemons; dstSubfolderSpec = 1; files = (
+				5BD77BBC2C5F70028EC36C3B /* com.rickson.housekeeping.helper.plist in Embed Launch Daemon */,
+			); name = "Embed Launch Daemon"; runOnlyForDeploymentPostprocessing = 0; };
+		680EE1733AD0D17C2C259C95 /* Embed Launch Agent */ = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; dstPath = Contents/Library/LaunchAgents; dstSubfolderSpec = 1; files = (
+				04F85D5AEE19499938016869 /* com.rickson.housekeeping.autoclean.plist in Embed Launch Agent */,
+			); name = "Embed Launch Agent"; runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		49250341B6F9D3BD03DCCEA9 /* House Keeping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "House Keeping.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8EFE77931A14EFACDB12B16 /* housekeeping */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = housekeeping; sourceTree = BUILT_PRODUCTS_DIR; };
+		F29BB038C50127F9FBD2B345 /* HouseKeepingHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HouseKeepingHelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		466DDBF27DAAF75159B3EE53 /* com.rickson.housekeeping.autoclean.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = com.rickson.housekeeping.autoclean.plist; sourceTree = "<group>"; };
+		4EAA17DDD618869302BBB011 /* com.rickson.housekeeping.helper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = com.rickson.housekeeping.helper.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F621E7F4CA59CE60721263B9 /* HouseKeeping */ = {isa = PBXFileSystemSynchronizedRootGroup; path = HouseKeeping; sourceTree = "<group>"; };
+		3016A2ACA9A74F84E3351555 /* HouseKeepingCLI */ = {isa = PBXFileSystemSynchronizedRootGroup; path = HouseKeepingCLI; sourceTree = "<group>"; };
+		A4EAB6D9BA6462514BA13D40 /* HouseKeepingHelper */ = {isa = PBXFileSystemSynchronizedRootGroup; path = HouseKeepingHelper; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1E25E9290380E0C869D76888 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (
+				849A3F4C7BD4A5BB20B22201 /* SweepCLI in Frameworks */,
+			); runOnlyForDeploymentPostprocessing = 0; };
+		4E08D08590FFE78A6BE02914 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (
+				BE986DBF89A3A1BB0D98688F /* SweepOptimize in Frameworks */,
+				3FC25A2B285FB2771417D19E /* SweepKit in Frameworks */,
+			); runOnlyForDeploymentPostprocessing = 0; };
+		6BABEBF1CF655019401D277E /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (
+				B63FB27ED7A6AF7AA30515CF /* SweepKit in Frameworks */,
+				7EBB3319BAB178C49D606DC6 /* SweepDesign in Frameworks */,
+				3E955580DC98478844170C47 /* SweepMetrics in Frameworks */,
+				BB66905C302F668CED2D3F96 /* SweepJunk in Frameworks */,
+				E4828859B6610350D36E5C5E /* SweepOptimize in Frameworks */,
+				F40E50BEDFD62EB1D18A1C43 /* StatusUI in Frameworks */,
+				3779284371FEB67F70832553 /* AnalyzeUI in Frameworks */,
+				D5CC8D605BA2870FC25CD6C3 /* JunkUI in Frameworks */,
+				028913ECEFE69AFC41918210 /* UninstallUI in Frameworks */,
+				EEBEADD716E36F825A51DEBE /* OptimizeUI in Frameworks */,
+			); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		781A329C36E8B7F3C43F806A /* Launchd */ = {isa = PBXGroup; children = (
+				466DDBF27DAAF75159B3EE53 /* com.rickson.housekeeping.autoclean.plist */,
+				4EAA17DDD618869302BBB011 /* com.rickson.housekeeping.helper.plist */,
+			); path = Launchd; sourceTree = "<group>"; };
+		49108901BA9D37D35762520D /* Products */ = {isa = PBXGroup; children = (
+				49250341B6F9D3BD03DCCEA9 /* House Keeping.app */,
+				E8EFE77931A14EFACDB12B16 /* housekeeping */,
+				F29BB038C50127F9FBD2B345 /* HouseKeepingHelper */,
+			); name = Products; sourceTree = "<group>"; };
+		CD842F8ACDA6DB0F9356BED2 = {isa = PBXGroup; children = (
+				F621E7F4CA59CE60721263B9 /* HouseKeeping */,
+				3016A2ACA9A74F84E3351555 /* HouseKeepingCLI */,
+				A4EAB6D9BA6462514BA13D40 /* HouseKeepingHelper */,
+				781A329C36E8B7F3C43F806A /* Launchd */,
+				49108901BA9D37D35762520D /* Products */,
+			); sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E3F94BECA3BF0CBF22A663E8 /* HouseKeepingCLI */ = {isa = PBXNativeTarget; buildConfigurationList = 9EDC060C6DE8F20719387452 /* Build configuration list */; buildPhases = (
+				145C351E5C0204BA8BB61DC8 /* Sources */,
+				1E25E9290380E0C869D76888 /* Frameworks */,
+			); buildRules = (
+			); dependencies = (
+			); fileSystemSynchronizedGroups = (
+				3016A2ACA9A74F84E3351555 /* HouseKeepingCLI */,
+			); name = HouseKeepingCLI; packageProductDependencies = (
+				5F0AB4D2ACAB90A57C57D559 /* SweepCLI */,
+			); productName = HouseKeepingCLI; productReference = E8EFE77931A14EFACDB12B16 /* housekeeping */; productType = "com.apple.product-type.tool"; };
+		7614A824EB1FF7507F7B4119 /* HouseKeepingHelper */ = {isa = PBXNativeTarget; buildConfigurationList = D8FECD28A2952D3267ADF7D8 /* Build configuration list */; buildPhases = (
+				94FC6C424D7E4C9A567E4A10 /* Sources */,
+				4E08D08590FFE78A6BE02914 /* Frameworks */,
+			); buildRules = (
+			); dependencies = (
+			); fileSystemSynchronizedGroups = (
+				A4EAB6D9BA6462514BA13D40 /* HouseKeepingHelper */,
+			); name = HouseKeepingHelper; packageProductDependencies = (
+				83DA7928020366089FD45C87 /* SweepOptimize */,
+				E4F6844D2B61F2C428F311C9 /* SweepKit */,
+			); productName = HouseKeepingHelper; productReference = F29BB038C50127F9FBD2B345 /* HouseKeepingHelper */; productType = "com.apple.product-type.tool"; };
+		F01C2E624E08A72BC055B46F /* HouseKeeping */ = {isa = PBXNativeTarget; buildConfigurationList = F2EF0BFE4C820F767E4303FC /* Build configuration list */; buildPhases = (
+				E3FB89BFEB0AF8E396D33884 /* Sources */,
+				6BABEBF1CF655019401D277E /* Frameworks */,
+				332D3568BB9E8B381DDDFBB8 /* Resources */,
+				F55F2E79D01F9056B0EF088C /* Embed Command Line Tool */,
+				E67185D193E9CFF27FE20998 /* Embed Helper */,
+				BEC4B3F52B32170C98A5FEB1 /* Embed Launch Daemon */,
+				680EE1733AD0D17C2C259C95 /* Embed Launch Agent */,
+			); buildRules = (
+			); dependencies = (
+				DFB76A0E0495DCDF5E6568DF /* PBXTargetDependency */,
+				6A6069553B867B763736FA3D /* PBXTargetDependency */,
+			); fileSystemSynchronizedGroups = (
+				F621E7F4CA59CE60721263B9 /* HouseKeeping */,
+			); name = HouseKeeping; packageProductDependencies = (
+				89A715AB24613C96C121911D /* SweepKit */,
+				E6AA6F92C1AD5E50AD68AB8E /* SweepDesign */,
+				300E5E1789866E461EE1CD81 /* SweepMetrics */,
+				ACDC58DC08C243E4F816C58D /* SweepJunk */,
+				AE7304348983F9EC520B90F9 /* SweepOptimize */,
+				59BD621D966CDE756E1070B8 /* StatusUI */,
+				80DE08E7B2B7726C64FCBC67 /* AnalyzeUI */,
+				4DA838B06229291630914EE3 /* JunkUI */,
+				19F542D252A68555E72BD11D /* UninstallUI */,
+				F441ED344F7DBC8F0EA1D839 /* OptimizeUI */,
+			); productName = HouseKeeping; productReference = 49250341B6F9D3BD03DCCEA9 /* House Keeping.app */; productType = "com.apple.product-type.application"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		46F86FAA6BBF9AC94A7E4595 /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 2700; LastUpgradeCheck = 2700; TargetAttributes = {
+					F01C2E624E08A72BC055B46F = {CreatedOnToolsVersion = 27.0; };
+					E3F94BECA3BF0CBF22A663E8 = {CreatedOnToolsVersion = 27.0; };
+					7614A824EB1FF7507F7B4119 = {CreatedOnToolsVersion = 27.0; };
+				}; }; buildConfigurationList = 32D42B6A09FA42C6EFFC8E0F /* Build configuration list */; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base, ); mainGroup = CD842F8ACDA6DB0F9356BED2; minimizedProjectReferenceProxies = 1; packageReferences = (
+				A46A1BCE0B67C45BEC8F435B /* SweepKit */,
+			); preferredProjectObjectVersion = 77; productRefGroup = 49108901BA9D37D35762520D /* Products */; projectDirPath = ""; projectRoot = ""; targets = (
+				F01C2E624E08A72BC055B46F /* HouseKeeping */,
+				E3F94BECA3BF0CBF22A663E8 /* HouseKeepingCLI */,
+				7614A824EB1FF7507F7B4119 /* HouseKeepingHelper */,
+			); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		332D3568BB9E8B381DDDFBB8 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
+			); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		145C351E5C0204BA8BB61DC8 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
+			); runOnlyForDeploymentPostprocessing = 0; };
+		94FC6C424D7E4C9A567E4A10 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
+			); runOnlyForDeploymentPostprocessing = 0; };
+		E3FB89BFEB0AF8E396D33884 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (
+			); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DFB76A0E0495DCDF5E6568DF /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = E3F94BECA3BF0CBF22A663E8 /* HouseKeepingCLI */; targetProxy = ECD5B3719E07C93476BECE82 /* PBXContainerItemProxy */; };
+		6A6069553B867B763736FA3D /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 7614A824EB1FF7507F7B4119 /* HouseKeepingHelper */; targetProxy = ED494BA5BA907E787EE1BE65 /* PBXContainerItemProxy */; };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		7ACFBEAE97735D571C63DD3F /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleName = housekeeping;
+				MARKETING_VERSION = 1.0;
+				OTHER_CODE_SIGN_FLAGS = "--identifier $(PRODUCT_BUNDLE_IDENTIFIER)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rickson.housekeeping.cli;
+				PRODUCT_NAME = housekeeping;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+			}; name = Debug; };
+		393A4F4454BB142189C70BD1 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleName = housekeeping;
+				MARKETING_VERSION = 1.0;
+				OTHER_CODE_SIGN_FLAGS = "--identifier $(PRODUCT_BUNDLE_IDENTIFIER)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rickson.housekeeping.cli;
+				PRODUCT_NAME = housekeeping;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+			}; name = Release; };
+		DB84A3FAD514A65E990C381D /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleName = HouseKeepingHelper;
+				MARKETING_VERSION = 1.0;
+				OTHER_CODE_SIGN_FLAGS = "--identifier $(PRODUCT_BUNDLE_IDENTIFIER)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rickson.housekeeping.helper;
+				PRODUCT_NAME = HouseKeepingHelper;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+			}; name = Debug; };
+		AC5BFFEDAB623C48ED9B3169 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleName = HouseKeepingHelper;
+				MARKETING_VERSION = 1.0;
+				OTHER_CODE_SIGN_FLAGS = "--identifier $(PRODUCT_BUNDLE_IDENTIFIER)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.rickson.housekeeping.helper;
+				PRODUCT_NAME = HouseKeepingHelper;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+			}; name = Release; };
+		0734E3BF1D7D1FE519145A53 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				EXECUTABLE_NAME = HouseKeeping;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "House Keeping";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find build artifacts in your projects.";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find build artifacts in your projects.";
+				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find old installers.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Cache rules informed by Mole (MIT).";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rickson.housekeeping;
+				PRODUCT_NAME = "House Keeping";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+			}; name = Debug; };
+		A44521F7D7D0FB5F7D3840DB /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				EXECUTABLE_NAME = HouseKeeping;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "House Keeping";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSDesktopFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find build artifacts in your projects.";
+				INFOPLIST_KEY_NSDocumentsFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find build artifacts in your projects.";
+				INFOPLIST_KEY_NSDownloadsFolderUsageDescription = "House Keeping reads this folder to measure it in Analyze and to find old installers.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Cache rules informed by Mole (MIT).";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rickson.housekeeping;
+				PRODUCT_NAME = "House Keeping";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+			}; name = Release; };
+		08D1B0DDBC8F69240C81E990 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("DEBUG=1", "$(inherited)");
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			}; name = Debug; };
+		320644C4979C1B7DC9632144 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 6.0;
+			}; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9EDC060C6DE8F20719387452 /* Build configuration list for cli */ = {isa = XCConfigurationList; buildConfigurations = (
+				7ACFBEAE97735D571C63DD3F /* Debug */,
+				393A4F4454BB142189C70BD1 /* Release */,
+			); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		D8FECD28A2952D3267ADF7D8 /* Build configuration list for helper */ = {isa = XCConfigurationList; buildConfigurations = (
+				DB84A3FAD514A65E990C381D /* Debug */,
+				AC5BFFEDAB623C48ED9B3169 /* Release */,
+			); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		F2EF0BFE4C820F767E4303FC /* Build configuration list for app */ = {isa = XCConfigurationList; buildConfigurations = (
+				0734E3BF1D7D1FE519145A53 /* Debug */,
+				A44521F7D7D0FB5F7D3840DB /* Release */,
+			); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		32D42B6A09FA42C6EFFC8E0F /* Build configuration list for PBXProject "HouseKeeping" */ = {isa = XCConfigurationList; buildConfigurations = (
+				08D1B0DDBC8F69240C81E990 /* Debug */,
+				320644C4979C1B7DC9632144 /* Release */,
+			); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A46A1BCE0B67C45BEC8F435B /* XCLocalSwiftPackageReference "SweepKit" */ = {isa = XCLocalSwiftPackageReference; relativePath = SweepKit; };
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5F0AB4D2ACAB90A57C57D559 /* SweepCLI */ = {isa = XCSwiftPackageProductDependency; productName = SweepCLI; };
+		83DA7928020366089FD45C87 /* SweepOptimize */ = {isa = XCSwiftPackageProductDependency; productName = SweepOptimize; };
+		E4F6844D2B61F2C428F311C9 /* SweepKit */ = {isa = XCSwiftPackageProductDependency; productName = SweepKit; };
+		89A715AB24613C96C121911D /* SweepKit */ = {isa = XCSwiftPackageProductDependency; productName = SweepKit; };
+		E6AA6F92C1AD5E50AD68AB8E /* SweepDesign */ = {isa = XCSwiftPackageProductDependency; productName = SweepDesign; };
+		300E5E1789866E461EE1CD81 /* SweepMetrics */ = {isa = XCSwiftPackageProductDependency; productName = SweepMetrics; };
+		ACDC58DC08C243E4F816C58D /* SweepJunk */ = {isa = XCSwiftPackageProductDependency; productName = SweepJunk; };
+		AE7304348983F9EC520B90F9 /* SweepOptimize */ = {isa = XCSwiftPackageProductDependency; productName = SweepOptimize; };
+		59BD621D966CDE756E1070B8 /* StatusUI */ = {isa = XCSwiftPackageProductDependency; productName = StatusUI; };
+		80DE08E7B2B7726C64FCBC67 /* AnalyzeUI */ = {isa = XCSwiftPackageProductDependency; productName = AnalyzeUI; };
+		4DA838B06229291630914EE3 /* JunkUI */ = {isa = XCSwiftPackageProductDependency; productName = JunkUI; };
+		19F542D252A68555E72BD11D /* UninstallUI */ = {isa = XCSwiftPackageProductDependency; productName = UninstallUI; };
+		F441ED344F7DBC8F0EA1D839 /* OptimizeUI */ = {isa = XCSwiftPackageProductDependency; productName = OptimizeUI; };
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 46F86FAA6BBF9AC94A7E4595 /* Project object */;
+}

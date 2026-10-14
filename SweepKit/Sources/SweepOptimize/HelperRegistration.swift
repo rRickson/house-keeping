@@ -31,7 +31,7 @@ public protocol HelperRegistering: Sendable {
 }
 
 /// `SMAppService.daemon` for the property list bundled at
-/// `Contents/Library/LaunchDaemons/com.rickson.sweep.helper.plist`.
+/// `Contents/Library/LaunchDaemons/com.rickson.housekeeping.helper.plist`.
 public struct HelperRegistration: HelperRegistering {
     private let plistName: String
 

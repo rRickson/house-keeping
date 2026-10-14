@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/icon.png" width="128" height="128" alt="Sweep icon">
+  <img src="docs/icon.png" width="128" height="128" alt="House Keeping icon: a witch on a broom crossing the moon">
 </p>
 
-<h1 align="center">Sweep</h1>
+<h1 align="center">House Keeping</h1>
 
 <p align="center">
   A native macOS cleaner for developers. One click from the menu bar frees npm, Yarn, pip, uv, Xcode,<br>
@@ -15,11 +15,11 @@
   <img src="docs/screenshots/popover-dark.png" width="300" alt="Menu bar popover, dark">
 </p>
 
-Sweep is a SwiftUI app for macOS 14 and later, with a command-line tool that shares the same engine. It has no
+House Keeping is a SwiftUI app for macOS 14 and later, with a command-line tool that shares the same engine. It has no
 account, no telemetry, no payments and no update server. It talks to nothing but the tools already on your Mac.
 
 > [!WARNING]
-> Sweep deletes files, and it is young. Read [Status](#status) before pointing it at a machine you care about,
+> House Keeping deletes files, and it is young. Read [Status](#status) before pointing it at a machine you care about,
 > and start with the [fixture home](#try-it-without-touching-your-mac) or `--dry-run`.
 
 ## What it does
@@ -81,7 +81,7 @@ number of days, and that is checked again right before deleting, so an open or r
 
 ## Safety model
 
-Sweep deletes only what a rule explicitly names. Everything else is denied by default, and the checks live in
+House Keeping deletes only what a rule explicitly names. Everything else is denied by default, and the checks live in
 the engine, so the menu bar, the main window and the CLI all get them.
 
 1. **Allowlist first.** A path is deletable only under a location a rule resolved to.
@@ -93,7 +93,7 @@ the engine, so the menu bar, the main window and the CLI all get them.
    scan is skipped.
 5. **Running-app guards.** DerivedData waits while Xcode runs; editor and browser caches wait for their apps.
 6. **Preview always.** Every action shows what will go and how much first; the CLI has `--dry-run` everywhere.
-7. **Ledger.** Every operation is appended to `~/Library/Logs/Sweep/operations.jsonl`.
+7. **Ledger.** Every operation is appended to `~/Library/Logs/House Keeping/operations.jsonl`.
 8. **Narrow root helper.** Admin work is an enum of named tasks. No raw path or shell string crosses to root.
 
 The test suite enforces this with fixture homes, symlink traps, git-tracked build folders, and a property test:
@@ -107,42 +107,42 @@ for random rules over random trees, no file outside the allowlist is ever remove
 
 ## Build
 
-Open `Sweep.xcodeproj` and run the `Sweep` scheme, or from the terminal:
+Open `HouseKeeping.xcodeproj` and run the `HouseKeeping` scheme, or from the terminal:
 
 ```bash
 Scripts/build-app.sh
 ```
 
-The app lands in `build/DerivedData/Build/Products/Debug/Sweep.app`. The project signs to run locally; choose
+The app lands in `build/DerivedData/Build/Products/Debug/House Keeping.app`. The project signs to run locally; choose
 your own team under Signing & Capabilities if you want the root helper to register.
 
 ## Try it without touching your Mac
 
-With `SWEEP_HOME` set, the app and the CLI see only that folder, run no real tools, and skip the login item,
+With `HOUSEKEEPING_HOME` set, the app and the CLI see only that folder, run no real tools, and skip the login item,
 hotkey and helper. A script builds a throwaway home full of fake caches, projects, apps and agent sessions:
 
 ```bash
-Scripts/make-fixture.sh /tmp/sweep-home
+Scripts/make-fixture.sh /tmp/housekeeping-home
 ```
 
 ```bash
-SWEEP_HOME=/tmp/sweep-home build/DerivedData/Build/Products/Debug/Sweep.app/Contents/MacOS/Sweep
+HOUSEKEEPING_HOME=/tmp/housekeeping-home "build/DerivedData/Build/Products/Debug/House Keeping.app/Contents/MacOS/HouseKeeping"
 ```
 
 Clean anything you like in there, then rerun the script to reset it.
 
 ## Command line
 
-The `sweep` binary is bundled in `Sweep.app/Contents/Helpers`; Settings → Advanced links it into
-`/usr/local/bin`. During development, `swift run --package-path SweepKit sweep …` works too.
+The `housekeeping` binary is bundled in `House Keeping.app/Contents/Helpers`; Settings → Advanced links it into
+`/usr/local/bin`. During development, `swift run --package-path SweepKit housekeeping …` works too.
 
 ```bash
-sweep scan [--json] [--all] [ids…]
-sweep clean --tier safe [--dry-run] [--trash] [--yes]
-sweep clean npm pip xcode-deriveddata
-sweep purge ~/Projects --older-than 30d [--dry-run] [--permanent] [--yes]
-sweep status [--json]
-sweep history [--json]
+housekeeping scan [--json] [--all] [ids…]
+housekeeping clean --tier safe [--dry-run] [--trash] [--yes]
+housekeeping clean npm pip xcode-deriveddata
+housekeeping purge ~/Projects --older-than 30d [--dry-run] [--permanent] [--yes]
+housekeeping status [--json]
+housekeeping history [--json]
 ```
 
 Destructive commands print what they will remove and ask first; in a script, pass `--yes`. Sizes marked
@@ -150,7 +150,7 @@ Destructive commands print what they will remove and ask first; in a script, pas
 
 ## Add your own rule
 
-Drop a JSON file into `~/Library/Application Support/Sweep/catalog.d/`. No rebuild needed.
+Drop a JSON file into `~/Library/Application Support/House Keeping/catalog.d/`. No rebuild needed.
 
 ```json
 {
@@ -173,19 +173,21 @@ Drop a JSON file into `~/Library/Application Support/Sweep/catalog.d/`. No rebui
 ## Project layout
 
 ```
-Sweep.xcodeproj     the app, the bundled CLI and the root helper
-Sweep/              app sources: menu bar, main window, Settings, hotkey, App Intents
-SweepKit/           one Swift package: engine, feature modules, their views, and the tests
-SweepHelper/        entry point of the privileged helper
-Launchd/            launchd plists embedded in the app
-Scripts/            build, fixture, icon and test helpers
-docs/               the product spec and screenshots
+HouseKeeping.xcodeproj   the app, the bundled CLI and the root helper
+HouseKeeping/            app sources: menu bar, main window, Settings, hotkey, App Intents
+HouseKeepingCLI/         entry point of the bundled command-line tool
+HouseKeepingHelper/      entry point of the privileged helper
+SweepKit/                one Swift package: engine, feature modules, their views, and the tests
+Launchd/                 launchd plists embedded in the app
+Scripts/                 build, fixture, icon and test helpers
+docs/                    the product spec and screenshots
 ```
 
 Inside `SweepKit`, the `SweepKit` target is the engine: Catalog → Resolver → Sizer → Guard → Executor → Ledger,
 plus the project scanner. `SweepMetrics`, `SweepAnalyze`, `SweepJunk`, `SweepUninstall` and `SweepOptimize` are
 the feature engines; `StatusUI`, `AnalyzeUI`, `JunkUI`, `UninstallUI` and `OptimizeUI` are their views;
-`SweepDesign` holds the shared look. The design is described in [docs/SPEC.md](docs/SPEC.md).
+`SweepDesign` holds the shared look. The package keeps the project's working name, Sweep, as does the
+original design in [docs/SPEC.md](docs/SPEC.md).
 
 ## Development
 
@@ -198,12 +200,12 @@ Tests build fixture homes in the temp directory and never touch the real one. De
 every screen to PNG, which is how the screenshots here were made:
 
 ```bash
-SWEEP_HOME=/tmp/sweep-home build/DerivedData/Build/Products/Debug/Sweep.app/Contents/MacOS/Sweep --snapshot /tmp/sweep-shots
+HOUSEKEEPING_HOME=/tmp/housekeeping-home "build/DerivedData/Build/Products/Debug/House Keeping.app/Contents/MacOS/HouseKeeping" --snapshot /tmp/housekeeping-shots
 ```
 
 ## Status
 
-Sweep is early. Honest state of things:
+House Keeping is early. Honest state of things:
 
 - **Solid:** the engine and its safety checks, the catalog, the CLI, and the clean, purge and uninstall flows,
   all covered by tests and exercised end to end against fixture homes.
@@ -213,7 +215,7 @@ Sweep is early. Honest state of things:
   have only run against fakes.
 - **Unverified paths:** the rules for agents other than Claude Code and Codex come from documentation and
   memory. A wrong path shows as "not found" and deletes nothing.
-- **Icons** are drawn monograms and SF Symbols, not brand logos. An image named `glyph-<id>` in the asset
+- **Tool icons** are drawn monograms and SF Symbols, not brand logos. An image named `glyph-<id>` in the asset
   catalog replaces a tile.
 
 ## Contributing
@@ -230,7 +232,7 @@ Run `Scripts/t.sh` before opening a pull request.
 ## Credits
 
 Cache rules and safety lists are informed by [Mole](https://github.com/tw93/Mole) (MIT) by tw93, the CLI behind
-Kivo. Sweep has its own Swift engine and shares no code with it.
+Kivo. House Keeping has its own Swift engine and shares no code with it.
 
 ## License
 

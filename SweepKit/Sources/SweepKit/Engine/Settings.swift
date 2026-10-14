@@ -129,7 +129,7 @@ public struct SweepSettings: Codable, Sendable, Equatable {
     }
 }
 
-/// Reads and writes `settings.json` in Sweep's Application Support folder.
+/// Reads and writes `settings.json` in House Keeping's Application Support folder.
 public struct SettingsStore: Sendable {
     public let fileURL: URL
 

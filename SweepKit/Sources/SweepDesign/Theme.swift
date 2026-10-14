@@ -1,7 +1,7 @@
 import SweepKit
 import SwiftUI
 
-/// The 8-point grid and corner radii every Sweep view uses.
+/// The 8-point grid and corner radii every House Keeping view uses.
 public enum SweepMetric {
     public static let grid: CGFloat = 8
     public static let panelRadius: CGFloat = 20
@@ -81,7 +81,7 @@ public struct RiskBadge: View {
 }
 
 extension Animation {
-    /// The standard Sweep motion: quick and under 400 ms.
+    /// The standard House Keeping motion: quick and under 400 ms.
     public static let sweep = Animation.snappy(duration: 0.3)
 }
 

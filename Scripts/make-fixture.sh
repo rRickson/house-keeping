@@ -1,10 +1,10 @@
 #!/bin/sh
-# Builds a throwaway home folder full of fake caches, projects and apps, so Sweep
-# can be exercised end to end without touching the real one.
+# Builds a throwaway home folder full of fake caches, projects and apps, so
+# House Keeping can be exercised end to end without touching the real one.
 #
-#   Scripts/make-fixture.sh /tmp/sweep-home
-#   SWEEP_HOME=/tmp/sweep-home build/DerivedData/Build/Products/Debug/Sweep.app/Contents/MacOS/Sweep
-#   SWEEP_HOME=/tmp/sweep-home sweep clean --tier safe --yes
+#   Scripts/make-fixture.sh /tmp/housekeeping-home
+#   HOUSEKEEPING_HOME=/tmp/housekeeping-home "build/DerivedData/Build/Products/Debug/House Keeping.app/Contents/MacOS/HouseKeeping"
+#   HOUSEKEEPING_HOME=/tmp/housekeeping-home housekeeping clean --tier safe --yes
 set -e
 HOME_DIR="${1:?usage: make-fixture.sh <folder>}"
 case "$HOME_DIR" in
@@ -128,8 +128,8 @@ fill "Library/Application Support/com.gone.Uninstalled/leftover.db" 10
 small Library/Preferences/com.gone.Uninstalled.plist
 
 # A little history
-mkdir -p "$HOME_DIR/Library/Logs/Sweep"
-python3 - "$HOME_DIR/Library/Logs/Sweep/operations.jsonl" <<'PY'
+mkdir -p "$HOME_DIR/Library/Logs/House Keeping"
+python3 - "$HOME_DIR/Library/Logs/House Keeping/operations.jsonl" <<'PY'
 import json, sys, uuid, datetime
 now = datetime.datetime.now(datetime.timezone.utc)
 rows = [(2, "devCaches", [("npm", "npm", 4_200_000_000), ("uv", "uv", 1_300_000_000), ("homebrew", "Homebrew", 600_000_000)]),

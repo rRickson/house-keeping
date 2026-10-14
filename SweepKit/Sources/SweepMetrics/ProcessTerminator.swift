@@ -53,7 +53,7 @@ public enum QuitRefusal: Error, Equatable, Sendable, LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .systemProcess: "macOS needs this process to keep running."
-        case .sweepItself: "This is Sweep. Quit it from the menu instead."
+        case .sweepItself: "This is House Keeping. Quit it from the menu instead."
         case .otherUser: "This process belongs to another user."
         case .notRunning: "The process has already ended."
         case .replaced: "The process ended and another one took its place."

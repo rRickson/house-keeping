@@ -18,7 +18,7 @@ let package = Package(
         .library(name: "UninstallUI", targets: ["UninstallUI"]),
         .library(name: "OptimizeUI", targets: ["OptimizeUI"]),
         .library(name: "SweepCLI", targets: ["SweepCLI"]),
-        .executable(name: "sweep", targets: ["sweep"]),
+        .executable(name: "housekeeping", targets: ["housekeeping"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0"),
@@ -55,7 +55,7 @@ let package = Package(
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
-        .executableTarget(name: "sweep", dependencies: ["SweepCLI"]),
+        .executableTarget(name: "housekeeping", dependencies: ["SweepCLI"]),
 
         .testTarget(name: "SweepKitTests", dependencies: ["SweepKit", "SweepTestSupport"]),
         .testTarget(name: "SweepMetricsTests", dependencies: ["SweepMetrics", "SweepTestSupport"]),

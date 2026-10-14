@@ -154,7 +154,7 @@ public struct JunkScanner: Sendable {
         engine.settings.isExcluded(path: path, context: engine.context)
     }
 
-    /// A placeholder row for a location macOS will not let Sweep read.
+    /// A placeholder row for a location macOS will not let House Keeping read.
     private func accessPlaceholder(_ category: JunkCategory, name: String, path: String) -> JunkEntry {
         JunkEntry(
             id: "\(category.rawValue):access",
@@ -248,7 +248,7 @@ public struct JunkScanner: Sendable {
         for child in children where child.kind == .directory || child.kind == .file {
             if child.name.hasPrefix(".") { continue }
             let path = rules.logs + "/" + child.name
-            // Never `~/Library/Logs/Sweep` (the ledger) and not the crash reports listed on their own.
+            // Never `~/Library/Logs/House Keeping` (the ledger) and not the crash reports listed on their own.
             guard rules.refusal(for: path, in: .logs) == nil, !isExcluded(path) else { continue }
             let name = child.kind == .directory ? JunkNaming.displayName(forFolder: child.name, lookUpInstalledApps: lookUp) : child.name
             result.append(JunkEntry(

@@ -17,7 +17,7 @@ public final class ToolLocator: @unchecked Sendable {
         self.queryLoginShell = queryLoginShell
     }
 
-    /// The PATH handed to every tool Sweep runs.
+    /// The PATH handed to every tool House Keeping runs.
     public var searchPath: String { searchDirectories().joined(separator: ":") }
 
     public func locate(_ tool: String) -> URL? {
@@ -54,7 +54,7 @@ public final class ToolLocator: @unchecked Sendable {
             || (try? FileManager.default.destinationOfSymbolicLink(atPath: "/var/db/xcode_select_link")) != nil
     }()
 
-    /// Forgets cached lookups, so a tool installed while Sweep is open is found on the next scan.
+    /// Forgets cached lookups, so a tool installed while House Keeping is open is found on the next scan.
     public func reset() {
         lock.lock()
         cache.removeAll()

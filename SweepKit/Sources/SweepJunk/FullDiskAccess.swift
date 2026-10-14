@@ -3,7 +3,7 @@ import Foundation
 import SweepKit
 
 /// Full Disk Access is optional. Without it macOS hides Safari, Mail, iOS
-/// backups, the Trash and some app containers from Sweep.
+/// backups, the Trash and some app containers from House Keeping.
 public enum FullDiskAccess {
     public enum Status: Sendable, Equatable {
         case granted

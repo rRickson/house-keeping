@@ -7,7 +7,7 @@ import Testing
 @Suite struct JunkCleanerTests {
     /// Files that no clean may ever remove.
     private static let untouchable = [
-        "Documents/thesis.txt", ".ssh/id_ed25519", "Library/Logs/Sweep/operations.jsonl",
+        "Documents/thesis.txt", ".ssh/id_ed25519", "Library/Logs/House Keeping/operations.jsonl",
         "Library/Caches/Homebrew/downloads/bottle.tar.gz", "Library/Application Support/Google/Chrome/Default/Cookies",
         "Library/Safari/History.db", "Projects/app/README.md", "SystemCaches/com.apple.something/cache.bin",
     ]
@@ -18,7 +18,7 @@ import Testing
 
     /// Every file in the fixture except the ledger a clean writes.
     private func withoutLedger(_ fixture: FixtureHome) -> Set<String> {
-        fixture.files().subtracting([fixture.path("Library/Logs/Sweep/operations.jsonl")])
+        fixture.files().subtracting([fixture.path("Library/Logs/House Keeping/operations.jsonl")])
     }
 
     @Test func cleaningRemovesOnlyTheTickedEntries() async throws {
@@ -112,13 +112,13 @@ import Testing
         let privileged = FakePrivileged()
         let entries = await fixture.scanner(privileged: privileged, options: options).scanCollected()
         let before = fixture.files()
-        let ledgerBefore = try Data(contentsOf: URL(fileURLWithPath: fixture.path("Library/Logs/Sweep/operations.jsonl")))
+        let ledgerBefore = try Data(contentsOf: URL(fileURLWithPath: fixture.path("Library/Logs/House Keeping/operations.jsonl")))
 
         let cleaner = fixture.cleaner(privileged: privileged, options: options)
         let report = await cleaner.clean(entries, dryRun: true)
 
         #expect(fixture.files() == before)
-        #expect(try Data(contentsOf: URL(fileURLWithPath: fixture.path("Library/Logs/Sweep/operations.jsonl"))) == ledgerBefore)
+        #expect(try Data(contentsOf: URL(fileURLWithPath: fixture.path("Library/Logs/House Keeping/operations.jsonl"))) == ledgerBefore)
         #expect(privileged.calls.isEmpty)
         #expect(trashed(fixture) == ["old-report.txt"])
 
@@ -188,7 +188,7 @@ import Testing
         let fixture = try FixtureHome()
         try fixture.write("Documents/.DS_Store")
         try fixture.write(".ssh/.DS_Store")
-        try fixture.write("Library/Logs/Sweep/operations.jsonl")
+        try fixture.write("Library/Logs/House Keeping/operations.jsonl")
         try fixture.write("Library/Caches/Homebrew/bottle")
         try fixture.write("Library/Application Support/Google/Chrome/Default/Cookies")
         try fixture.write("Projects/app/main.swift")
@@ -206,8 +206,8 @@ import Testing
             forged(.userCaches, "Library/Caches/Homebrew"),
             forged(.userCaches, fixture.path("Library/Caches") + "/../../Documents/thesis.txt"),
             forged(.browserCaches, "Library/Application Support/Google/Chrome/Default"),
-            forged(.logs, "Library/Logs/Sweep"),
-            forged(.logs, "Library/Logs/Sweep/operations.jsonl"),
+            forged(.logs, "Library/Logs/House Keeping"),
+            forged(.logs, "Library/Logs/House Keeping/operations.jsonl"),
             forged(.logs, "Library/Logs"),
             forged(.crashReports, "Documents/thesis.txt"),
             forged(.dsStore, "Documents/.DS_Store"),
@@ -369,7 +369,7 @@ import Testing
         let cleaner = fixture.cleaner()
         let report = await cleaner.clean(entries)
 
-        #expect(fixture.exists("Library/Logs/Sweep/operations.jsonl"))
+        #expect(fixture.exists("Library/Logs/House Keeping/operations.jsonl"))
         let operations = cleaner.engine.ledger.operations()
         #expect(operations.count == 1)
         let logged = try #require(operations.first)
@@ -409,7 +409,7 @@ import Testing
         let report = await cleaner.clean(entries)
 
         #expect(privileged.calls == [.cleanSystemCaches])
-        // Sweep itself deleted nothing: the fake helper touches no files.
+        // House Keeping itself deleted nothing: the fake helper touches no files.
         #expect(withoutLedger(fixture) == before)
         let result = try #require(report.results.first)
         #expect(result.status == .cleaned)

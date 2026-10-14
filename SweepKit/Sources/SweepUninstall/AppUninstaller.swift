@@ -29,7 +29,7 @@ public final class AppUninstaller: Sendable {
 
     // MARK: Discovery
 
-    /// Apps the user can act on, sorted by name. System apps and Sweep itself are left out.
+    /// Apps the user can act on, sorted by name. System apps and House Keeping itself are left out.
     public func installedApps() async -> [InstalledApp] {
         await inventory(refresh: true).filter { $0.hiddenReason == nil }.map(\.app)
     }
@@ -78,7 +78,7 @@ public final class AppUninstaller: Sendable {
         if app.removability.isRemovable {
             if let token = app.caskToken {
                 let zap = await casks.zapPaths(token: token)
-                // Homebrew deletes without asking Sweep's guard, so the guard is asked here.
+                // Homebrew deletes without asking House Keeping's guard, so the guard is asked here.
                 let refused = zap.filter { !isAcceptableZapPath($0) }
                 if refused.isEmpty {
                     for path in zap where seen.insert(path).inserted {

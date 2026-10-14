@@ -1,6 +1,6 @@
 import Foundation
 
-/// The complete list of things Sweep may do as root. The helper accepts one of
+/// The complete list of things House Keeping may do as root. The helper accepts one of
 /// these names and nothing else: no raw paths, no shell strings.
 public enum PrivilegedTask: String, Codable, Sendable, CaseIterable {
     case flushDNS

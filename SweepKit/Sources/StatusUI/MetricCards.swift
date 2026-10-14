@@ -4,7 +4,7 @@ import SweepMetrics
 import SwiftUI
 
 enum StatusFont {
-    /// Headline numbers: SF Pro Rounded, so they match every other total in Sweep.
+    /// Headline numbers: SF Pro Rounded, so they match every other total in House Keeping.
     static let number = Font.system(size: 28, weight: .semibold, design: .rounded)
     static let unit = Font.system(size: 15, design: .rounded)
     /// The smaller numbers of a card that shows two values side by side.

@@ -70,7 +70,7 @@ public struct XPCHelperTransport: HelperTransport {
                 pending.finish(failure(error.localizedDescription))
             }
             guard let helper = proxy as? any HelperXPCProtocol else {
-                pending.finish(failure("The helper does not speak Sweep's protocol"))
+                pending.finish(failure("The helper does not speak House Keeping's protocol"))
                 return
             }
             body(helper) { pending.finish($0) }

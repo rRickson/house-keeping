@@ -116,11 +116,11 @@ struct AppReview: View {
         if plan.items.contains(where: { $0.needsAdmin && $0.route == .sweep }) {
             switch model.adminAvailability {
             case .unavailable:
-                lines.append(("lock", "Some items belong to the system. They stay until Sweep's helper is turned on in Settings."))
+                lines.append(("lock", "Some items belong to the system. They stay until House Keeping's helper is turned on in Settings."))
             case .passwordPrompt:
                 lines.append(("lock", "Some items belong to the system. macOS asks for an administrator password to remove them."))
             case .helper, nil:
-                lines.append(("lock", "Some items belong to the system and are removed by Sweep's helper."))
+                lines.append(("lock", "Some items belong to the system and are removed by House Keeping's helper."))
             }
         }
         for note in plan.notes { lines.append(("info.circle", note)) }
@@ -239,7 +239,7 @@ private struct VendorCard: View {
                 Image(systemName: "shield.lefthalf.filled")
                     .symbolRenderingMode(.hierarchical)
             }
-            Text("\(app.name) is security software. It installs system extensions that only its own uninstaller removes cleanly, so Sweep leaves it alone.")
+            Text("\(app.name) is security software. It installs system extensions that only its own uninstaller removes cleanly, so House Keeping leaves it alone.")
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
             HStack(spacing: 12) {

@@ -22,7 +22,7 @@ import SweepTestSupport
 
     @Test func userCatalogEntriesAreMerged() throws {
         let fixture = try FixtureHome()
-        let directory = fixture.path("Library/Application Support/Sweep/catalog.d")
+        let directory = fixture.path("Library/Application Support/House Keeping/catalog.d")
         try FileManager.default.createDirectory(atPath: directory, withIntermediateDirectories: true)
         let json = """
         {"id": "mytool", "name": "My tool", "group": "other", "risk": "safe",
@@ -440,7 +440,7 @@ import SweepTestSupport
 @Suite struct LedgerTests {
     @Test func appendsOneLinePerOperation() throws {
         let fixture = try FixtureHome()
-        let ledger = Ledger(directory: fixture.home.appendingPathComponent("Library/Logs/Sweep"))
+        let ledger = Ledger(directory: fixture.home.appendingPathComponent("Library/Logs/House Keeping"))
         for index in 0..<3 {
             ledger.append(SweepOperation(kind: .devCaches, source: "test", entries: [
                 OperationEntry(itemID: "npm", itemName: "npm", target: "/tmp/\(index)", bytes: 1000, mode: "permanent", result: .removed),

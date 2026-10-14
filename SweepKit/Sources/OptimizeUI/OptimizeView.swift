@@ -69,7 +69,7 @@ private struct AdminFootnote: View {
     private var text: String? {
         switch availability {
         case .helper:
-            "Admin tasks run through Sweep's helper, which accepts only the tasks in this list."
+            "Admin tasks run through House Keeping's helper, which accepts only the tasks in this list."
         case .passwordPrompt:
             "Admin tasks ask for your password once per run. Install the helper in Settings to skip the prompt."
         case .unavailable:

@@ -125,7 +125,7 @@ public struct BrokenLaunchAgents: Sendable {
     }
 
     /// True only when the path certainly does not exist. A program on a volume
-    /// that is not mounted, or one Sweep may not look at, is not "missing".
+    /// that is not mounted, or one House Keeping may not look at, is not "missing".
     static func isMissing(_ program: String) -> Bool {
         let path = URL(fileURLWithPath: program).standardizedFileURL.path
         if path.hasPrefix("/Volumes/") || path.hasPrefix("/Network/") { return false }

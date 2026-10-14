@@ -30,9 +30,9 @@ extension FixtureHome {
         return names.map { String($0.dropFirst(9)) }.sorted()
     }
 
-    /// Every file except Sweep's own operations log, which records skipped and failed runs too.
+    /// Every file except House Keeping's own operations log, which records skipped and failed runs too.
     func userFiles() -> Set<String> {
-        files().filter { !$0.hasPrefix(path("Library/Logs/Sweep/")) }
+        files().filter { !$0.hasPrefix(path("Library/Logs/House Keeping/")) }
     }
 
     func uninstaller(

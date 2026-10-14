@@ -45,7 +45,7 @@ extension CommandRunning {
     }
 }
 
-/// A runner that knows no tools. Used when Sweep runs against a fixture home,
+/// A runner that knows no tools. Used when House Keeping runs against a fixture home,
 /// so a real tool can never point the engine at a real cache.
 public struct NullCommandRunner: CommandRunning {
     public init() {}

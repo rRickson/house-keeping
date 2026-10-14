@@ -103,7 +103,7 @@ extension FixtureHome {
         try write("Library/Logs/SomeApp/app.log", bytes: 8192)
         try write("Library/Logs/install.log")
         try write("Library/Logs/DiagnosticReports/SomeApp-2026-01-01.ips")
-        try write("Library/Logs/Sweep/operations.jsonl")
+        try write("Library/Logs/House Keeping/operations.jsonl")
         try write("Library/Containers/com.apple.mail/Data/Library/Mail Downloads/4F2A/invoice.pdf")
         try write("Downloads/.DS_Store")
         try write("Projects/app/.DS_Store")

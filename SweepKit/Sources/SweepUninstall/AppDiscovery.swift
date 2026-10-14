@@ -1,7 +1,7 @@
 import Foundation
 import SweepKit
 
-/// Security and antivirus products Sweep lists but never removes.
+/// Security and antivirus products House Keeping lists but never removes.
 public enum SecurityCatalog {
     private static func vendor(_ name: String, _ url: String) -> SecurityVendor {
         SecurityVendor(name: name, supportURL: URL(string: url) ?? URL(fileURLWithPath: "/"))
@@ -156,13 +156,13 @@ struct AppDiscovery: Sendable {
         let real = SafetyGuard.realpath(app.path) ?? app.path
         if SafetyGuard.isSame(real, orInside: "/System") { return "part of macOS" }
         if let id = app.bundleID?.lowercased() {
-            if environment.ownBundleIDs.contains(where: { $0.lowercased() == id }) { return "Sweep itself" }
+            if environment.ownBundleIDs.contains(where: { $0.lowercased() == id }) { return "House Keeping itself" }
             if BundleIdentifier.isApple(id), !Self.removableAppleApps.contains(id),
                Fingerprint(path: app.path + "/Contents/_MASReceipt/receipt") == nil {
                 return "ships with macOS"
             }
         }
-        if !context.isFixture, real == Bundle.main.bundlePath { return "Sweep itself" }
+        if !context.isFixture, real == Bundle.main.bundlePath { return "House Keeping itself" }
         return nil
     }
 

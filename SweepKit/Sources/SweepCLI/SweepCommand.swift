@@ -4,7 +4,7 @@ import SweepKit
 
 public struct SweepCommand: AsyncParsableCommand {
     public static let configuration = CommandConfiguration(
-        commandName: "sweep",
+        commandName: "housekeeping",
         abstract: "Reclaim developer caches and build artifacts.",
         discussion: "Every destructive command previews what it will remove and accepts --dry-run.",
         version: "1.0.0",
@@ -146,7 +146,7 @@ func selectItems(_ engine: SweepEngine, ids: [String]) throws -> [CatalogItem] {
     guard !ids.isEmpty else { return engine.catalog.items }
     return try ids.map { id in
         guard let item = engine.catalog.item(id) else {
-            throw ValidationError("Unknown catalog id '\(id)'. Run `sweep scan --all` to list them.")
+            throw ValidationError("Unknown catalog id '\(id)'. Run `housekeeping scan --all` to list them.")
         }
         return item
     }
@@ -157,7 +157,7 @@ func selectItems(_ engine: SweepEngine, ids: [String]) throws -> [CatalogItem] {
 struct Clean: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         abstract: "Clean caches by tier or by name.",
-        discussion: "Examples:\n  sweep clean --tier safe --dry-run\n  sweep clean npm pip xcode-deriveddata"
+        discussion: "Examples:\n  housekeeping clean --tier safe --dry-run\n  housekeeping clean npm pip xcode-deriveddata"
     )
 
     @Option(name: .long, help: "Clean every ready item of a tier: safe or caution. Repeatable.")
@@ -189,7 +189,7 @@ struct Clean: AsyncParsableCommand {
             let byTier = tiers.contains(result.item.risk) && !engine.settings.disabledItems.contains(result.id)
             guard byName || byTier else { continue }
             if result.selectable {
-                if byName { print("\(result.item.name): pick the entries to remove in the Sweep app; skipped.") }
+                if byName { print("\(result.item.name): pick the entries to remove in the House Keeping app; skipped.") }
                 continue
             }
             if let reason = result.status.reason {
@@ -236,7 +236,7 @@ struct Clean: AsyncParsableCommand {
 struct Purge: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         abstract: "Delete build artifacts (node_modules, target, .venv …) inside projects.",
-        discussion: "Example:\n  sweep purge ~/Projects --older-than 30d --dry-run"
+        discussion: "Example:\n  housekeeping purge ~/Projects --older-than 30d --dry-run"
     )
 
     @Argument(help: "Folders to scan. Uses the Settings scan roots when omitted.") var roots: [String] = []

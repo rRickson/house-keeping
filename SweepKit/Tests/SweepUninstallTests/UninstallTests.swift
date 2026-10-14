@@ -71,7 +71,7 @@ import Testing
         try fixture.app("Xcode", bundleID: "com.apple.dt.Xcode")
         try fixture.app("Store App", bundleID: "com.apple.SomeStoreApp")
         try fixture.write("Applications/Store App.app/Contents/_MASReceipt/receipt")
-        try fixture.app("Sweep", bundleID: "com.rickson.sweep")
+        try fixture.app("House Keeping", bundleID: "com.rickson.housekeeping")
         try fixture.app("Foo", bundleID: "com.foo.App")
 
         let uninstaller = fixture.uninstaller()
@@ -82,7 +82,7 @@ import Testing
         let all = await uninstaller.inventory(refresh: true)
         #expect(all.count == 6)
         #expect(all.first { $0.app.name == "Safari" }?.hiddenReason == "ships with macOS")
-        #expect(all.first { $0.app.name == "Sweep" }?.hiddenReason == "Sweep itself")
+        #expect(all.first { $0.app.name == "House Keeping" }?.hiddenReason == "House Keeping itself")
     }
 
     @Test func securityAppsAreListedButNeverRemoved() async throws {
@@ -616,7 +616,7 @@ import Testing
         let command = try #require(report.operation.entries.first { $0.mode == "command" })
         #expect(command.target == "brew uninstall --zap --cask tiled")
         #expect(command.result == .removed)
-        // Sweep did not delete what Homebrew owns: the fake brew removed nothing, so it is all still there.
+        // House Keeping did not delete what Homebrew owns: the fake brew removed nothing, so it is all still there.
         #expect(fixture.exists("Applications/Tiled.app"))
         #expect(fixture.exists("Library/Preferences/org.mapeditor.Tiled.plist"))
         #expect(fixture.exists("Library/Application Support/Tiled Extras 1/file"))
@@ -793,7 +793,7 @@ import Testing
         let entry = try #require(report.operation.entries.first { $0.mode == "helper" && $0.result == .removed })
         #expect(entry.target == "removeApplication com.foo.App")
         #expect(entry.bytes == 4242)
-        // Sweep itself deleted nothing: the fake helper removes no files, so the bundle is untouched
+        // House Keeping itself deleted nothing: the fake helper removes no files, so the bundle is untouched
         // and, because the app is still there, its leftovers were kept too.
         #expect(fixture.userFiles() == before)
         #expect(fixture.trashed().isEmpty)
@@ -821,7 +821,7 @@ import Testing
         #expect(helper.calls == [FakePrivileged.Call(task: .removeApplication, argument: "com.foo.App")])
         #expect(report.stoppedReason == nil)
         #expect(fixture.trashed() == ["Foo Editor.app", "com.foo.App.plist"])
-        // The daemon file was left to the helper, never deleted by Sweep.
+        // The daemon file was left to the helper, never deleted by House Keeping.
         #expect(FileManager.default.fileExists(atPath: daemon))
         #expect(report.operation.entries.first { $0.target == daemon }?.reason == "left in place by the admin helper")
     }
@@ -878,12 +878,12 @@ import Testing
             "Library/Preferences/loginwindow.plist",
             "Library/Application Support/1.2.3/x",
             "Library/Caches/foo.bar.baz/x",
-            // In use, registered elsewhere, or Sweep's own.
+            // In use, registered elsewhere, or House Keeping's own.
             "Library/Caches/com.running.Daemon/blob",
             "Library/Application Support/com.busy.tool/x",
             "Library/Containers/com.registered.Tool/Data/x",
             "Library/Containers/com.registered.Tool.Extension/Data/x",
-            "Library/Preferences/com.rickson.sweep.plist",
+            "Library/Preferences/com.rickson.housekeeping.plist",
             "Library/Preferences/com.github.Electron.plist",
             // Command-line tools, runtimes and system services.
             "Library/Caches/org.swift.swiftpm/x",

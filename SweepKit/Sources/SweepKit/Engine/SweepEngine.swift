@@ -44,7 +44,7 @@ public final class SweepEngine: Sendable {
     private let memo = CommandMemo()
     private let catalogBox: Locked<Catalog>
     private let settingsBox: Locked<SweepSettings>
-    private let log = Logger(subsystem: "com.rickson.sweep", category: "engine")
+    private let log = Logger(subsystem: "com.rickson.housekeeping", category: "engine")
 
     public init(context: SweepContext = .live(), catalog: Catalog? = nil, settings: SweepSettings? = nil, commandTimeout: TimeInterval = 120) {
         self.context = context

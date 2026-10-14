@@ -42,7 +42,7 @@ extension AppUninstaller {
     /// on this Mac answers to any more, biggest first, sizes included.
     ///
     /// Deliberately narrow. A leftover is listed only when all of this holds:
-    /// its name is a reverse-DNS identifier; it is not Apple's or Sweep's; no
+    /// its name is a reverse-DNS identifier; it is not Apple's or House Keeping's; no
     /// installed app, embedded helper, registered app or running process has
     /// that identifier, a parent of it or a child of it; no installed app
     /// comes from the same developer (developers share data between their
@@ -174,7 +174,7 @@ extension AppUninstaller {
                 result: result, reason: reason))
         }
 
-        // Look again: the path must still be an orphan Sweep itself would list.
+        // Look again: the path must still be an orphan House Keeping itself would list.
         var stillOrphan = false
         if let current = await orphanCandidates().first(where: { $0.path == orphan.path }) {
             stillOrphan = await measuredIfUnused(current) != nil

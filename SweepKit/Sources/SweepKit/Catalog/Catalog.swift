@@ -1,7 +1,7 @@
 import Foundation
 
-/// The set of rules Sweep knows: the bundled catalog plus any JSON dropped
-/// into `~/Library/Application Support/Sweep/catalog.d/`.
+/// The set of rules House Keeping knows: the bundled catalog plus any JSON dropped
+/// into `~/Library/Application Support/House Keeping/catalog.d/`.
 public struct Catalog: Sendable {
     public var items: [CatalogItem]
     /// Problems found while loading user entries (file name and reason).
@@ -28,7 +28,7 @@ public struct Catalog: Sendable {
         }
     }
 
-    /// Finds `catalog.json`. The `sweep` tool inside Sweep.app sits in
+    /// Finds `catalog.json`. The `sweep` tool inside House Keeping.app sits in
     /// `Contents/Helpers`, where SwiftPM's own lookup does not search, so the
     /// app's Resources folder is tried first.
     private static func catalogURL() -> URL? {

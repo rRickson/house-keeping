@@ -37,7 +37,7 @@ final class StatusModel {
         self.terminator = ProcessTerminator()
         self.pinned = PinnedProcesses.load(from: defaults)
         self.quitUnavailableReason = engine.context.isFixture
-            ? "Quitting is off while Sweep runs against a fixture home."
+            ? "Quitting is off while House Keeping runs against a fixture home."
             : nil
     }
 

@@ -9,7 +9,7 @@ public struct NotificationHistory: Sendable {
 
     public enum State: Sendable, Equatable {
         case ready(path: String)
-        /// The database exists but macOS will not let Sweep read it.
+        /// The database exists but macOS will not let House Keeping read it.
         case needsFullDiskAccess
         case notFound
     }
@@ -55,7 +55,7 @@ public struct NotificationHistory: Sendable {
     }
 
     /// The statement that counts what would go. It doubles as a check that the
-    /// table still has the shape Sweep expects before anything is deleted.
+    /// table still has the shape House Keeping expects before anything is deleted.
     func countStatement() -> String {
         "SELECT count(*) FROM record WHERE delivered_date IS NOT NULL AND delivered_date > 0 AND delivered_date < \(cutoff());"
     }

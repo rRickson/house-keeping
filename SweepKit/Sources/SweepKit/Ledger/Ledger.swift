@@ -1,7 +1,7 @@
 import Foundation
 
 /// Append-only log of every operation, one JSON object per line, in
-/// `~/Library/Logs/Sweep/operations.jsonl`.
+/// `~/Library/Logs/House Keeping/operations.jsonl`.
 public final class Ledger: Sendable {
     public let fileURL: URL
     private let lock = NSLock()

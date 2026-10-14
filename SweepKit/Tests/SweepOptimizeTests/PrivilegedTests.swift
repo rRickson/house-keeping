@@ -364,15 +364,15 @@ import Testing
 
 @Suite struct CallerVerifierTests {
     @Test func requirementNamesTheAppAndTheTeam() {
-        #expect(CodeRequirement.text(identifier: "com.rickson.sweep", teamIdentifier: "AB12CD34EF")
-            == "identifier \"com.rickson.sweep\" and anchor apple generic and certificate leaf[subject.OU] = \"AB12CD34EF\"")
+        #expect(CodeRequirement.text(identifier: "com.rickson.housekeeping", teamIdentifier: "AB12CD34EF")
+            == "identifier \"com.rickson.housekeeping\" and anchor apple generic and certificate leaf[subject.OU] = \"AB12CD34EF\"")
     }
 
     @Test func oddValuesNeverReachTheRequirement() {
-        #expect(CodeRequirement.text(identifier: "com.rickson.sweep", teamIdentifier: "X\" or anchor apple") == nil)
-        #expect(CodeRequirement.text(identifier: "com.rickson.sweep\" or true", teamIdentifier: "AB12CD34EF") == nil)
+        #expect(CodeRequirement.text(identifier: "com.rickson.housekeeping", teamIdentifier: "X\" or anchor apple") == nil)
+        #expect(CodeRequirement.text(identifier: "com.rickson.housekeeping\" or true", teamIdentifier: "AB12CD34EF") == nil)
         #expect(CodeRequirement.text(identifier: "", teamIdentifier: "AB12CD34EF") == nil)
-        #expect(CodeRequirement.text(identifier: "com.rickson.sweep", teamIdentifier: "") == nil)
+        #expect(CodeRequirement.text(identifier: "com.rickson.housekeeping", teamIdentifier: "") == nil)
     }
 
     @Test func aHelperWithoutATeamTrustsNobody() {
@@ -380,9 +380,9 @@ import Testing
     }
 
     @Test func aProcessThatIsNotSweepIsRejected() throws {
-        // The test runner is neither `com.rickson.sweep` nor signed by this team.
+        // The test runner is neither `com.rickson.housekeeping` nor signed by this team.
         let verifier = try #require(CallerVerifier(teamIdentifier: "AB12CD34EF"))
-        #expect(verifier.requirementText.contains("\"com.rickson.sweep\""))
+        #expect(verifier.requirementText.contains("\"com.rickson.housekeeping\""))
         #expect(!verifier.isTrusted(processIdentifier: getpid()))
         #expect(!verifier.isTrusted(processIdentifier: 1))
     }

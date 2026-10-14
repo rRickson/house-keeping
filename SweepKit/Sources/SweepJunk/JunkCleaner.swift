@@ -74,7 +74,7 @@ public struct JunkCleaner: Sendable {
     public let privileged: any PrivilegedRunning
     public var options: JunkOptions
     private let rules: JunkRules
-    private let log = Logger(subsystem: "com.rickson.sweep", category: "junk")
+    private let log = Logger(subsystem: "com.rickson.housekeeping", category: "junk")
 
     public init(engine: SweepEngine, privileged: any PrivilegedRunning = NoPrivilegedRunner(), options: JunkOptions = JunkOptions()) {
         self.engine = engine
@@ -221,7 +221,7 @@ public struct JunkCleaner: Sendable {
     // MARK: System caches
 
     /// `/Library/Caches` is emptied by the privileged runner, which accepts the
-    /// task name and nothing else. Sweep never deletes there itself.
+    /// task name and nothing else. House Keeping never deletes there itself.
     private func cleanSystemCaches(_ entry: JunkEntry, dryRun: Bool) async -> (JunkEntryResult, [OperationEntry]) {
         let target = "helper: \(PrivilegedTask.cleanSystemCaches.rawValue)"
         func finish(_ status: JunkEntryResult.Status, _ outcome: OperationEntry.Result, bytes: Int64, reason: String? = nil) -> (JunkEntryResult, [OperationEntry]) {

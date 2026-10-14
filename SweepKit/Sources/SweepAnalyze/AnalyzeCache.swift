@@ -9,7 +9,7 @@ public enum AnalyzeCacheError: Error, Sendable, Equatable {
 /// Keeps the last scan of each folder on disk for a day, so reopening Analyze
 /// shows the treemap at once instead of walking the disk again.
 ///
-/// One file per scanned path under `Application Support/Sweep/AnalyzeCache/`.
+/// One file per scanned path under `Application Support/House Keeping/AnalyzeCache/`.
 /// The tree is written as plain columns of numbers plus one block of names,
 /// then compressed, which is far smaller and faster than JSON for a million nodes.
 public struct AnalyzeCache: Sendable {
