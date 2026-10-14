@@ -1,0 +1,494 @@
+[
+  {
+    "id": "npm", "name": "npm", "group": "javascript", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#CB3837", "monogram": "npm",
+    "locate": [
+      {"command": ["npm", "config", "get", "cache"], "append": ["_cacache"]},
+      {"env": "npm_config_cache", "append": ["_cacache"]},
+      {"paths": ["~/.npm/_cacache"]}
+    ],
+    "clean": {"type": "command", "command": ["npm", "cache", "clean", "--force"]},
+    "note": "Packages are downloaded again on the next install."
+  },
+  {
+    "id": "yarn", "name": "Yarn 1", "group": "javascript", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#2C8EBB", "monogram": "Y1",
+    "locate": [
+      {"command": ["yarn", "cache", "dir"]},
+      {"paths": ["~/Library/Caches/Yarn"]}
+    ],
+    "clean": {"type": "command", "command": ["yarn", "cache", "clean"]},
+    "note": "Packages are downloaded again on the next install."
+  },
+  {
+    "id": "yarn-berry", "name": "Yarn Berry", "group": "javascript", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#2C8EBB", "monogram": "Y2",
+    "locate": [
+      {"command": ["yarn", "config", "get", "cacheFolder"]},
+      {"env": "YARN_CACHE_FOLDER"},
+      {"paths": ["~/.yarn/berry/cache"]}
+    ],
+    "clean": {"type": "delete"},
+    "note": "The global cache of Yarn 2 and later."
+  },
+  {
+    "id": "pnpm", "name": "pnpm", "group": "javascript", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#F69220", "monogram": "pn",
+    "locate": [
+      {"command": ["pnpm", "store", "path"]},
+      {"paths": ["~/Library/pnpm/store"]}
+    ],
+    "clean": {"type": "command", "command": ["pnpm", "store", "prune"], "partial": true},
+    "note": "Removes packages no project references."
+  },
+  {
+    "id": "bun", "name": "Bun", "group": "javascript", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#F1D9B5", "monogram": "bun",
+    "locate": [
+      {"env": "BUN_INSTALL_CACHE_DIR"},
+      {"paths": ["~/.bun/install/cache"]}
+    ],
+    "clean": {"type": "command", "command": ["bun", "pm", "cache", "rm"]},
+    "note": "Packages are downloaded again on the next install."
+  },
+  {
+    "id": "deno", "name": "Deno", "group": "javascript", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#3B3B45", "monogram": "D",
+    "locate": [
+      {"command": ["deno", "info", "--json"], "jsonKey": "denoDir"},
+      {"env": "DENO_DIR"},
+      {"paths": ["~/Library/Caches/deno"]}
+    ],
+    "clean": {"type": "delete"},
+    "note": "Remote modules and compiled output are fetched again when needed."
+  },
+  {
+    "id": "node-gyp", "name": "node-gyp headers", "group": "javascript", "risk": "safe",
+    "symbol": "doc.text", "tint": "#5FA04E", "monogram": "gyp",
+    "locate": [{"paths": ["~/Library/Caches/node-gyp"]}],
+    "clean": {"type": "delete"},
+    "note": "Node headers are downloaded again by the next native build."
+  },
+  {
+    "id": "electron", "name": "Electron downloads", "group": "javascript", "risk": "safe",
+    "symbol": "atom", "tint": "#47848F",
+    "locate": [{"paths": ["~/Library/Caches/electron", "~/Library/Caches/electron-builder"]}],
+    "clean": {"type": "delete"},
+    "note": "Electron binaries are downloaded again on the next install."
+  },
+  {
+    "id": "playwright", "name": "Playwright browsers", "group": "javascript", "risk": "caution",
+    "symbol": "theatermasks.fill", "tint": "#2EAD33",
+    "locate": [
+      {"env": "PLAYWRIGHT_BROWSERS_PATH"},
+      {"paths": ["~/Library/Caches/ms-playwright"]}
+    ],
+    "clean": {"type": "delete"},
+    "note": "Restore with `npx playwright install`."
+  },
+  {
+    "id": "puppeteer", "name": "Puppeteer browsers", "group": "javascript", "risk": "caution",
+    "symbol": "globe", "tint": "#01A982", "monogram": "pp",
+    "locate": [
+      {"env": "PUPPETEER_CACHE_DIR"},
+      {"paths": ["~/.cache/puppeteer"]}
+    ],
+    "clean": {"type": "delete"},
+    "note": "Browsers are downloaded again on the next install."
+  },
+  {
+    "id": "cypress", "name": "Cypress binaries", "group": "javascript", "risk": "caution",
+    "symbol": "globe", "tint": "#3A4A6B", "monogram": "cy",
+    "locate": [
+      {"command": ["npx", "--no", "cypress", "cache", "path"]},
+      {"env": "CYPRESS_CACHE_FOLDER"},
+      {"paths": ["~/Library/Caches/Cypress"]}
+    ],
+    "clean": {"type": "command", "command": ["npx", "--no", "cypress", "cache", "clear"]},
+    "note": "Restore with `npx cypress install`."
+  },
+  {
+    "id": "pip", "name": "pip", "group": "python", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#3776AB", "monogram": "pip",
+    "locate": [
+      {"command": ["python3", "-m", "pip", "cache", "dir"]},
+      {"env": "PIP_CACHE_DIR"},
+      {"paths": ["~/Library/Caches/pip"]}
+    ],
+    "clean": {"type": "command", "command": ["python3", "-m", "pip", "cache", "purge"]},
+    "note": "Wheels are downloaded or built again on the next install."
+  },
+  {
+    "id": "uv", "name": "uv", "group": "python", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#C44DD8", "monogram": "uv",
+    "locate": [
+      {"command": ["uv", "cache", "dir"]},
+      {"env": "UV_CACHE_DIR"},
+      {"paths": ["~/.cache/uv"]}
+    ],
+    "clean": {"type": "command", "command": ["uv", "cache", "prune"], "partial": true},
+    "note": "Removes unused entries. Settings can switch this to a full `uv cache clean`."
+  },
+  {
+    "id": "poetry", "name": "Poetry cache", "group": "python", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#5B8DEF", "monogram": "Po",
+    "locate": [
+      {"command": ["poetry", "config", "cache-dir"]},
+      {"env": "POETRY_CACHE_DIR"},
+      {"paths": ["~/Library/Caches/pypoetry"]}
+    ],
+    "clean": {"type": "deleteChildren", "exclude": ["virtualenvs"]},
+    "note": "Package cache only; virtualenvs are left alone."
+  },
+  {
+    "id": "poetry-virtualenvs", "name": "Poetry virtualenvs", "group": "python", "risk": "ask",
+    "symbol": "square.stack.3d.up.fill", "tint": "#5B8DEF",
+    "locate": [
+      {"command": ["poetry", "config", "virtualenvs.path"]},
+      {"env": "POETRY_CACHE_DIR", "append": ["virtualenvs"]},
+      {"paths": ["~/Library/Caches/pypoetry/virtualenvs"]}
+    ],
+    "clean": {"type": "select"},
+    "note": "Environments you created. Recreate one with `poetry install`."
+  },
+  {
+    "id": "pipenv", "name": "Pipenv", "group": "python", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#2B5B84", "monogram": "pe",
+    "locate": [
+      {"env": "PIPENV_CACHE_DIR"},
+      {"paths": ["~/Library/Caches/pipenv"]}
+    ],
+    "clean": {"type": "delete"},
+    "note": "Packages are downloaded again on the next install."
+  },
+  {
+    "id": "conda", "name": "Conda packages", "group": "python", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#44A833", "monogram": "C",
+    "locate": [
+      {"command": ["conda", "info", "--json"], "jsonKey": "pkgs_dirs"},
+      {"paths": ["~/miniconda3/pkgs", "~/anaconda3/pkgs", "~/miniforge3/pkgs", "~/.conda/pkgs", "/opt/homebrew/Caskroom/miniconda/base/pkgs"]}
+    ],
+    "clean": {"type": "command", "command": ["conda", "clean", "--all", "-y"]},
+    "note": "Removes package tarballs and unused packages."
+  },
+  {
+    "id": "pyenv", "name": "pyenv downloads", "group": "python", "risk": "safe",
+    "symbol": "arrow.down.circle", "tint": "#FFD43B", "monogram": "py",
+    "locate": [
+      {"command": ["pyenv", "root"], "append": ["cache"]},
+      {"env": "PYENV_ROOT", "append": ["cache"]},
+      {"paths": ["~/.pyenv/cache"]}
+    ],
+    "clean": {"type": "delete"},
+    "note": "Python source archives are downloaded again by the next `pyenv install`."
+  },
+  {
+    "id": "pre-commit", "name": "pre-commit", "group": "python", "risk": "safe",
+    "symbol": "checkmark.seal", "tint": "#FAB040", "monogram": "pc",
+    "locate": [
+      {"env": "PRE_COMMIT_HOME"},
+      {"paths": ["~/.cache/pre-commit"]}
+    ],
+    "clean": {"type": "command", "command": ["pre-commit", "clean"]},
+    "note": "Hook environments are rebuilt on the next commit."
+  },
+  {
+    "id": "huggingface", "name": "Hugging Face models", "group": "python", "risk": "ask",
+    "symbol": "face.smiling", "tint": "#FFD21E",
+    "locate": [
+      {"env": "HF_HUB_CACHE"},
+      {"env": "HF_HOME", "append": ["hub"]},
+      {"paths": ["~/.cache/huggingface/hub"]}
+    ],
+    "clean": {"type": "select", "match": "*--*"},
+    "note": "Models and datasets you downloaded. Each one is downloaded again when used."
+  },
+  {
+    "id": "xcode-deriveddata", "name": "Xcode DerivedData", "group": "apple", "risk": "safe",
+    "symbol": "hammer.fill", "tint": "#1575F9",
+    "locate": [
+      {"command": ["defaults", "read", "com.apple.dt.Xcode", "IDECustomDerivedDataLocation"]},
+      {"paths": ["~/Library/Developer/Xcode/DerivedData"]}
+    ],
+    "clean": {"type": "deleteChildren"},
+    "guards": {"notRunning": ["Xcode", "com.apple.dt.Xcode"]},
+    "note": "Build products and indexes. Xcode rebuilds them on the next build."
+  },
+  {
+    "id": "xcode-archives", "name": "Xcode Archives", "group": "apple", "risk": "ask",
+    "symbol": "archivebox.fill", "tint": "#1575F9",
+    "locate": [{"paths": ["~/Library/Developer/Xcode/Archives"]}],
+    "clean": {"type": "select"},
+    "note": "Archives hold the dSYMs needed to symbolicate crashes of shipped builds."
+  },
+  {
+    "id": "device-support", "name": "Device support files", "group": "apple", "risk": "caution",
+    "symbol": "iphone", "tint": "#8E8E93",
+    "locate": [{"paths": ["~/Library/Developer/Xcode/*DeviceSupport"]}],
+    "clean": {"type": "handler", "handler": "device-support"},
+    "note": "Keeps the newest version per platform. Older ones are copied again when a device connects."
+  },
+  {
+    "id": "unavailable-simulators", "name": "Unavailable simulators", "group": "apple", "risk": "safe",
+    "symbol": "iphone.slash", "tint": "#8E8E93",
+    "locate": [],
+    "clean": {"type": "handler", "handler": "unavailable-simulators"},
+    "note": "Simulator devices whose runtime is no longer installed."
+  },
+  {
+    "id": "simulator-caches", "name": "Simulator caches", "group": "apple", "risk": "safe",
+    "symbol": "iphone", "tint": "#5E7CE2",
+    "locate": [{"paths": ["~/Library/Developer/CoreSimulator/Caches"]}],
+    "clean": {"type": "deleteChildren"},
+    "guards": {"notRunning": ["Simulator", "com.apple.iphonesimulator"]},
+    "note": "Rebuilt the next time a simulator boots."
+  },
+  {
+    "id": "simulator-runtimes", "name": "Simulator runtimes", "group": "apple", "risk": "ask",
+    "symbol": "square.stack.3d.down.right.fill", "tint": "#5E7CE2",
+    "locate": [],
+    "clean": {"type": "handler", "handler": "simulator-runtimes"},
+    "note": "Each runtime is a multi-gigabyte download from Xcode's Components settings."
+  },
+  {
+    "id": "swiftpm", "name": "SwiftPM", "group": "apple", "risk": "safe",
+    "symbol": "swift", "tint": "#F05138",
+    "locate": [{"paths": ["~/Library/Caches/org.swift.swiftpm"]}],
+    "clean": {"type": "deleteChildren"},
+    "note": "Package checkouts and manifests are fetched again on the next resolve."
+  },
+  {
+    "id": "cocoapods", "name": "CocoaPods", "group": "apple", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#EE3322", "monogram": "pod",
+    "locate": [{"paths": ["~/Library/Caches/CocoaPods"]}],
+    "clean": {"type": "command", "command": ["pod", "cache", "clean", "--all"]},
+    "note": "Pods are downloaded again on the next `pod install`."
+  },
+  {
+    "id": "carthage", "name": "Carthage", "group": "apple", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#6B6B73", "monogram": "Ca",
+    "locate": [{"paths": ["~/Library/Caches/org.carthage.CarthageKit"]}],
+    "clean": {"type": "delete"},
+    "note": "Dependencies are fetched and built again on the next bootstrap."
+  },
+  {
+    "id": "gradle", "name": "Gradle", "group": "jvm", "risk": "caution",
+    "symbol": "shippingbox", "tint": "#02303A", "monogram": "G",
+    "locate": [
+      {"env": "GRADLE_USER_HOME", "append": ["caches", "wrapper/dists"]},
+      {"paths": ["~/.gradle/caches", "~/.gradle/wrapper/dists"]}
+    ],
+    "clean": {"type": "delete", "before": [["gradle", "--stop"]]},
+    "note": "Stops the Gradle daemon first. Dependencies and distributions are downloaded again."
+  },
+  {
+    "id": "maven", "name": "Maven", "group": "jvm", "risk": "caution",
+    "symbol": "shippingbox", "tint": "#C71A36", "monogram": "mvn",
+    "locate": [{"paths": ["~/.m2/repository"]}],
+    "clean": {"type": "delete"},
+    "note": "The local repository. Offline builds fail until it is downloaded again."
+  },
+  {
+    "id": "android-emulator", "name": "Android emulator images", "group": "jvm", "risk": "ask",
+    "symbol": "apps.iphone", "tint": "#3DDC84",
+    "locate": [{"paths": ["~/Library/Android/sdk/system-images", "~/.android/avd"]}],
+    "clean": {"type": "select"},
+    "note": "System images and virtual devices you created."
+  },
+  {
+    "id": "jetbrains", "name": "JetBrains caches", "group": "editors", "risk": "safe",
+    "symbol": "chevron.left.forwardslash.chevron.right", "tint": "#FF318C", "monogram": "JB",
+    "locate": [{"paths": ["~/Library/Caches/JetBrains", "~/Library/Caches/Google"]}],
+    "clean": {"type": "handler", "handler": "jetbrains-stale"},
+    "note": "Only caches of IDE versions that are no longer installed, Android Studio included."
+  },
+  {
+    "id": "editor-caches", "name": "VS Code / Cursor caches", "group": "editors", "risk": "safe",
+    "symbol": "chevron.left.forwardslash.chevron.right", "tint": "#007ACC",
+    "locate": [{"paths": ["~/Library/Application Support/{Code,Cursor}/{Cache,CachedData,CachedExtensionVSIXs,logs}"]}],
+    "clean": {"type": "delete"},
+    "guards": {
+      "notRunning": ["com.microsoft.VSCode", "Visual Studio Code", "Cursor", "com.todesktop.230313mzl4w4u92"],
+      "runningReason": "VS Code or Cursor is running"
+    },
+    "note": "Rebuilt the next time the editor starts."
+  },
+  {
+    "id": "cargo", "name": "Cargo registry", "group": "rustGo", "risk": "safe",
+    "symbol": "gearshape.fill", "tint": "#B7410E",
+    "locate": [
+      {"env": "CARGO_HOME", "append": ["registry/cache", "git/db"]},
+      {"paths": ["~/.cargo/registry/cache", "~/.cargo/git/db"]}
+    ],
+    "clean": {"type": "delete"},
+    "note": "Crate archives and git dependencies are downloaded again on the next build."
+  },
+  {
+    "id": "go-build", "name": "Go build cache", "group": "rustGo", "risk": "safe",
+    "symbol": "hammer", "tint": "#00ADD8", "monogram": "GO",
+    "locate": [
+      {"command": ["go", "env", "GOCACHE"]},
+      {"env": "GOCACHE"},
+      {"paths": ["~/Library/Caches/go-build"]}
+    ],
+    "clean": {"type": "command", "command": ["go", "clean", "-cache"]},
+    "note": "Rebuilt by the next `go build`."
+  },
+  {
+    "id": "go-mod", "name": "Go module cache", "group": "rustGo", "risk": "caution",
+    "symbol": "shippingbox", "tint": "#00ADD8", "monogram": "GO",
+    "locate": [
+      {"command": ["go", "env", "GOMODCACHE"]},
+      {"env": "GOMODCACHE"},
+      {"paths": ["~/go/pkg/mod"]}
+    ],
+    "clean": {"type": "command", "command": ["go", "clean", "-modcache"]},
+    "note": "Every module is downloaded again; offline builds fail until then."
+  },
+  {
+    "id": "claude-tmp", "name": "Claude Code session temp files", "group": "aiAgents", "risk": "safe",
+    "symbol": "timer", "tint": "#D97757",
+    "locate": [{"paths": ["/private/tmp/claude-*/*"]}],
+    "clean": {"type": "deleteChildren", "olderThanDays": 3},
+    "note": "Scratch folders and task output of sessions untouched for 3 days. Open sessions are left alone."
+  },
+  {
+    "id": "claude-leftovers", "name": "Claude Code shell snapshots and logs", "group": "aiAgents", "risk": "safe",
+    "symbol": "terminal.fill", "tint": "#D97757",
+    "locate": [{"paths": ["~/.claude/shell-snapshots", "~/.claude/paste-cache", "~/.claude/session-env", "~/.claude/debug", "~/Library/Caches/claude-cli-nodejs"]}],
+    "clean": {"type": "deleteChildren", "olderThanDays": 7},
+    "note": "Shell snapshots, paste cache and debug logs of sessions untouched for a week."
+  },
+  {
+    "id": "claude-desktop-cache", "name": "Claude app caches", "group": "aiAgents", "risk": "safe",
+    "symbol": "macwindow", "tint": "#D97757",
+    "locate": [{"paths": ["~/Library/Application Support/Claude/{Cache,Code Cache,GPUCache,GraphiteDawnCache,DawnGraphiteCache,DawnWebGPUCache}"]}],
+    "clean": {"type": "delete"},
+    "guards": {"notRunning": ["com.anthropic.claudefordesktop"], "runningReason": "Claude is running"},
+    "note": "Web caches of the Claude desktop app. Rebuilt the next time it starts."
+  },
+  {
+    "id": "claude-file-history", "name": "Claude Code file checkpoints", "group": "aiAgents", "risk": "caution",
+    "symbol": "arrow.uturn.backward", "tint": "#D97757",
+    "locate": [{"paths": ["~/.claude/file-history"]}],
+    "clean": {"type": "deleteChildren", "olderThanDays": 30},
+    "note": "Backups that let a session rewind its file edits. Old sessions can no longer rewind. The age is set in Settings."
+  },
+  {
+    "id": "claude-transcripts", "name": "Claude Code old session transcripts", "group": "aiAgents", "risk": "caution",
+    "symbol": "text.bubble.fill", "tint": "#D97757",
+    "locate": [{"paths": ["~/.claude/projects/*"]}],
+    "clean": {"type": "deleteChildren", "match": "????????-????-????-????-????????????*", "olderThanDays": 30},
+    "note": "Old conversations can no longer be resumed. Project memory folders are never touched. The age is set in Settings."
+  },
+  {
+    "id": "codex-leftovers", "name": "Codex shell snapshots and logs", "group": "aiAgents", "risk": "safe",
+    "symbol": "terminal.fill", "tint": "#10A37F",
+    "locate": [{"paths": ["~/.codex/shell_snapshots", "~/.codex/log"]}],
+    "clean": {"type": "deleteChildren", "olderThanDays": 7},
+    "note": "Shell snapshots and logs of sessions untouched for a week."
+  },
+  {
+    "id": "codex-sessions", "name": "Codex old sessions", "group": "aiAgents", "risk": "caution",
+    "symbol": "text.bubble.fill", "tint": "#10A37F",
+    "locate": [{"paths": ["~/.codex/sessions/*/*", "~/.codex/archived_sessions"]}],
+    "clean": {"type": "deleteChildren", "olderThanDays": 30},
+    "note": "Recordings of old sessions, which can then no longer be resumed. The age is set in Settings."
+  },
+  {
+    "id": "codex-worktrees", "name": "Codex worktrees", "group": "aiAgents", "risk": "ask",
+    "symbol": "arrow.triangle.branch", "tint": "#10A37F",
+    "locate": [{"paths": ["~/.codex/worktrees"]}],
+    "clean": {"type": "select", "olderThanDays": 3},
+    "note": "Working copies Codex made for its tasks. Any change in them that was never committed or pushed is lost."
+  },
+  {
+    "id": "codex-images", "name": "Codex generated images", "group": "aiAgents", "risk": "ask",
+    "symbol": "photo.fill", "tint": "#10A37F",
+    "locate": [{"paths": ["~/.codex/generated_images"]}],
+    "clean": {"type": "select"},
+    "note": "Images Codex generated for you. They cannot be recreated."
+  },
+  {
+    "id": "agents-temp", "name": "Other agents: temp files and logs", "group": "aiAgents", "risk": "safe",
+    "symbol": "sparkles", "tint": "#7C6CF0",
+    "locate": [{"paths": ["~/.gemini/tmp", "~/.local/share/opencode/log", "~/.local/state/goose/logs", "~/.copilot/logs", "~/.aider/caches"]}],
+    "clean": {"type": "deleteChildren", "olderThanDays": 7},
+    "note": "Gemini CLI, opencode, Goose, Copilot CLI and Aider: temp files and logs untouched for a week."
+  },
+  {
+    "id": "agents-history", "name": "Other agents: old task history", "group": "aiAgents", "risk": "caution",
+    "symbol": "text.bubble.fill", "tint": "#7C6CF0",
+    "locate": [{"paths": [
+      "~/Library/Application Support/{Code,Cursor}/User/globalStorage/{saoudrizwan.claude-dev,rooveterinaryinc.roo-cline}/tasks",
+      "~/.local/share/goose/sessions", "~/.copilot/session-state"
+    ]}],
+    "clean": {"type": "deleteChildren", "olderThanDays": 30},
+    "note": "Cline, Roo Code, Goose and Copilot CLI: old tasks, which can then no longer be reopened. The age is set in Settings."
+  },
+  {
+    "id": "homebrew", "name": "Homebrew", "group": "other", "risk": "safe",
+    "symbol": "mug.fill", "tint": "#F9A825",
+    "locate": [
+      {"command": ["brew", "--cache"]},
+      {"env": "HOMEBREW_CACHE"},
+      {"paths": ["~/Library/Caches/Homebrew"]}
+    ],
+    "clean": {"type": "command", "command": ["brew", "cleanup", "--prune=all"], "partial": true},
+    "note": "Removes downloads and old versions of installed formulae."
+  },
+  {
+    "id": "composer", "name": "Composer", "group": "other", "risk": "safe",
+    "symbol": "shippingbox", "tint": "#885630", "monogram": "Co",
+    "locate": [
+      {"command": ["composer", "config", "--global", "cache-dir"]},
+      {"env": "COMPOSER_CACHE_DIR"},
+      {"paths": ["~/Library/Caches/composer"]}
+    ],
+    "clean": {"type": "command", "command": ["composer", "clear-cache"]},
+    "note": "Packages are downloaded again on the next install."
+  },
+  {
+    "id": "rubygems", "name": "RubyGems / Bundler", "group": "other", "risk": "caution",
+    "symbol": "diamond.fill", "tint": "#CC342D",
+    "locate": [{"command": ["gem", "env", "gemdir"], "append": ["cache"]}],
+    "alsoPaths": ["~/.bundle/cache"],
+    "clean": {"type": "command", "command": ["gem", "cleanup"], "partial": true},
+    "note": "Removes old versions of installed gems."
+  },
+  {
+    "id": "docker-build-cache", "name": "Docker build cache", "group": "containers", "risk": "safe",
+    "symbol": "shippingbox.fill", "tint": "#2496ED",
+    "locate": [],
+    "clean": {"type": "handler", "handler": "docker-build-cache"},
+    "note": "Layers are rebuilt by the next `docker build`."
+  },
+  {
+    "id": "docker-prune", "name": "Docker stopped containers and dangling images", "group": "containers", "risk": "caution",
+    "symbol": "square.stack.3d.up.slash.fill", "tint": "#2496ED",
+    "locate": [],
+    "clean": {"type": "handler", "handler": "docker-prune"},
+    "note": "Also removes unused networks. Stopped containers lose their writable layer."
+  },
+  {
+    "id": "docker-images", "name": "Docker unused images", "group": "containers", "risk": "caution",
+    "symbol": "square.stack.3d.up.fill", "tint": "#2496ED",
+    "locate": [],
+    "clean": {"type": "handler", "handler": "docker-images"},
+    "note": "Every image no container uses, not only dangling ones. They are pulled or built again when needed."
+  },
+  {
+    "id": "docker-volumes", "name": "Docker volumes", "group": "containers", "risk": "ask",
+    "symbol": "externaldrive.fill", "tint": "#2496ED",
+    "locate": [],
+    "clean": {"type": "handler", "handler": "docker-volumes"},
+    "note": "Volumes hold data such as databases. This cannot be undone."
+  },
+  {
+    "id": "ollama", "name": "Ollama models", "group": "other", "risk": "ask",
+    "symbol": "brain", "tint": "#6B6B73",
+    "locate": [],
+    "clean": {"type": "handler", "handler": "ollama-models"},
+    "note": "Models you pulled. Each one is downloaded again with `ollama pull`."
+  }
+]
