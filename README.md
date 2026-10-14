@@ -10,9 +10,9 @@
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/popover-light.png" width="300" alt="Menu bar popover, light">
+  <img src="docs/screenshots/popover.png" width="300" alt="Menu bar popover: presets, group filters and cache cards">
   &nbsp;&nbsp;
-  <img src="docs/screenshots/popover-dark.png" width="300" alt="Menu bar popover, dark">
+  <img src="docs/screenshots/popover-detail.png" width="300" alt="A cache up close: its size, an age slider and four facts">
 </p>
 
 House Keeping is a SwiftUI app for macOS 14 and later, with a command-line tool that shares the same engine. It has no
@@ -26,9 +26,10 @@ account, no telemetry, no payments and no update server. It talks to nothing but
 
 **Menu bar**
 
-- **One-click clean.** A single button cleans every Safe-tier cache; the number on it is the sum of the ticked rows.
-- **Quick erase.** A grid of icons, one per cache that is safe to erase. Click one to erase just that cache;
-  clicks queue while another runs.
+- **One-click clean.** The blue button cleans everything selected; the header says how much that is.
+- **Presets.** Safe, Deep, JS, Apple and AI select a set of caches in one tap, like lighting scenes.
+- **Cards.** Every cache is a card you tap to select; selected cards glow in the tool's colour. The biggest one
+  gets its own erase button, and the chevron opens a detail with its size, an age slider and where it lives.
 - **Live scan.** Each tool gets its own row and loading state, so sizes appear as they arrive.
 - **Global hotkey** (⌃⌥⌘K by default), a right-click menu, notifications, and optional scheduled cleans.
 

@@ -28,6 +28,8 @@ enum Snapshotter {
                 }
             }
             await render(SettingsView(), size: nil, name: "settings", appearance: .aqua, to: outputDirectory)
+            await render(PopoverView(detail: "npm"), size: nil, name: "popover-detail", appearance: .aqua, to: outputDirectory)
+            await render(PopoverView(detail: "claude-transcripts"), size: nil, name: "popover-detail-agents", appearance: .aqua, to: outputDirectory)
 
             // Mid-scan: some tools measured, some being measured again, some not heard from yet.
             model.debugSimulateScanning(loading: ["pnpm", "pip", "xcode-deriveddata"], unknown: ["bun", "uv", "homebrew", "cocoapods"])

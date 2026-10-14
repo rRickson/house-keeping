@@ -108,3 +108,16 @@ enum WitchIcon {
         return image
     }
 }
+
+extension WitchIcon {
+    /// The witch in one solid colour, for illustrations rather than the menu bar.
+    static func silhouette(height: CGFloat, color: NSColor) -> NSImage {
+        let scale = height / WitchShape.size.height
+        let size = NSSize(width: WitchShape.size.width * scale, height: height)
+        return NSImage(size: size, flipped: false) { _ in
+            color.set()
+            WitchShape.draw(scale: scale)
+            return true
+        }
+    }
+}

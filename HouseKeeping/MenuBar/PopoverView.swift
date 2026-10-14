@@ -2,32 +2,55 @@ import SweepDesign
 import SweepKit
 import SwiftUI
 
-/// The menu bar popover: open it, read one number, press one button.
+/// The menu bar popover: a dark panel with the witch over the moon, presets
+/// to pick what goes, and every cache as a card you tap to select.
 struct PopoverView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.openSettings) private var openSettings
-    @State private var expanded: String?
+    @State private var filter: CatalogGroup?
+    @State private var detailID: String?
     @State private var cautionToConfirm: [ScanResult] = []
     @State private var showCautionSheet = false
 
+    /// - Parameter detail: a catalog id to open straight on its detail (used for screenshots).
+    init(detail: String? = nil) {
+        _detailID = State(initialValue: detail)
+    }
+
     var body: some View {
         VStack(spacing: 0) {
-            header
-            primaryAction
-                .padding(.horizontal, 16)
-                .padding(.bottom, 12)
-            QuickEraseBar()
-            list
-            projectsLine
+            ZStack(alignment: .top) {
+                PopoverHero(isBusy: model.isBusy)
+                    .frame(height: detailID == nil ? 176 : 200)
+                header
+                    .padding(.horizontal, 16)
+                    .padding(.top, 14)
+            }
+            if let detailID {
+                CacheDetailView(id: detailID) { withAnimation(.sweep) { self.detailID = nil } }
+                    .transition(.move(edge: .trailing).combined(with: .opacity))
+            } else {
+                main
+                    .transition(.move(edge: .leading).combined(with: .opacity))
+            }
             footer
         }
         .frame(width: SweepMetric.popoverWidth)
-        .overlay { ParticleSweep(trigger: model.banner?.id) }
+        .background(Night.background)
+        .environment(\.colorScheme, .dark)
+        .overlay { ParticleSweep(trigger: model.banner?.id).tint(Night.badge) }
         .background {
-            // Esc closes the popover.
-            Button("Close") { closePopover() }
-                .keyboardShortcut(.cancelAction)
-                .hidden()
+            // Keyboard: Esc closes, ⌘R rescans, Return cleans what is selected.
+            Group {
+                Button("Close") { detailID == nil ? closePopover() : withAnimation(.sweep) { detailID = nil } }
+                    .keyboardShortcut(.cancelAction)
+                Button("Rescan") { model.rescan() }
+                    .keyboardShortcut("r")
+                Button("Clean") { cleanTapped() }
+                    .keyboardShortcut(.defaultAction)
+                    .disabled(detailID != nil)
+            }
+            .hidden()
         }
         .onAppear { model.rescanIfStale() }
         .sheet(isPresented: $showCautionSheet) {
@@ -40,119 +63,201 @@ struct PopoverView: View {
     // MARK: Header
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(model.volumeName).font(.headline)
-                Spacer()
-                Text(scanStatus)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .contentTransition(.opacity)
-                Button {
-                    model.rescan()
-                } label: {
-                    Image(systemName: "arrow.clockwise")
-                        .symbolEffect(.pulse, isActive: model.isScanning)
+        HStack(spacing: 10) {
+            Image(systemName: "house")
+                .font(.system(size: 15, weight: .medium))
+                .foregroundStyle(Night.text)
+                .frame(width: 36, height: 36)
+                .background(Color(white: 0.22).opacity(0.9), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).strokeBorder(Color.white.opacity(0.12), lineWidth: 1))
+            VStack(alignment: .leading, spacing: 2) {
+                Text("House Keeping")
+                    .font(.headline)
+                    .foregroundStyle(Night.text)
+                HStack(spacing: 5) {
+                    Circle()
+                        .fill(model.isBusy ? Night.badge : Night.green)
+                        .frame(width: 6, height: 6)
+                    statusLine
                 }
-                .buttonStyle(.borderless)
-                .keyboardShortcut("r")
-                .disabled(model.isBusy)
-                .help("Rescan (⌘R)")
+                .font(.caption)
+                .lineLimit(1)
             }
-            DiskBar(model.disk)
-            HStack {
-                Text("\(ByteFormat.string(model.disk.used)) used")
-                Spacer()
-                Text("\(ByteFormat.string(model.disk.free)) free")
+            Spacer(minLength: 8)
+            NightCircleButton(symbol: "slider.horizontal.3", size: 36) {
+                openSettings()
+                NSApp.activate(ignoringOtherApps: true)
             }
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .monospacedDigit()
+            .help("Settings")
+            NightCircleButton(symbol: "sparkles", size: 46, prominent: true,
+                              progress: model.cleaning?.fraction,
+                              isEnabled: model.cleaning == nil && !model.checkedResults.isEmpty) { cleanTapped() }
+                .help(model.checkedResults.isEmpty ? "Nothing selected" : "Clean \(ByteFormat.string(model.checkedBytes))")
         }
-        .padding(16)
     }
-
-    private var scanStatus: String {
-        if let progress = model.scanProgress { return "Scanning \(progress.done) of \(progress.total)" }
-        if model.isScanning { return "Scanning…" }
-        guard let lastScan = model.lastScan else { return "" }
-        if Date().timeIntervalSince(lastScan) < 60 { return "Scanned just now" }
-        return "Scanned \(lastScan.relativeDescription)"
-    }
-
-    // MARK: Primary action
 
     @ViewBuilder
-    private var primaryAction: some View {
+    private var statusLine: some View {
         if let cleaning = model.cleaning {
-            VStack(spacing: 8) {
-                ProgressView(value: cleaning.fraction)
-                HStack {
-                    Text("Cleaning")
-                    SizeText(cleaning.freed, font: .system(.callout, design: .rounded).weight(.semibold))
-                    Text("of \(ByteFormat.string(cleaning.total))").foregroundStyle(.secondary)
-                    Spacer()
-                    Button("Cancel") { model.cancelClean() }
-                        .buttonStyle(.borderless)
-                }
-                .font(.callout)
-            }
-            .frame(height: 44)
-            .transition(.opacity)
+            Text("Cleaning").foregroundStyle(Night.text).fontWeight(.semibold)
+            Text("· \(ByteFormat.string(cleaning.freed)) freed").foregroundStyle(Night.secondary)
         } else if let banner = model.banner {
-            HStack(spacing: 8) {
-                Image(systemName: banner.bytes > 0 ? "checkmark.circle.fill" : "circle.slash")
-                    .font(.title2)
-                    .foregroundStyle(.tint)
-                    .symbolEffect(.bounce, value: banner.id)
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 4) {
-                        Text("Freed")
-                        SizeText(banner.bytes, font: .system(.headline, design: .rounded))
-                    }
-                    .font(.headline)
-                    Text(bannerDetail(banner)).font(.caption).foregroundStyle(.secondary)
-                }
-                Spacer()
-            }
-            .frame(height: 44)
-            .transition(.opacity)
+            Text("Freed \(ByteFormat.string(banner.bytes))").foregroundStyle(Night.text).fontWeight(.semibold)
+            Text("· \(banner.count) cache\(banner.count == 1 ? "" : "s")\(banner.failures > 0 ? ", \(banner.failures) failed" : "")")
+                .foregroundStyle(Night.secondary)
+        } else if let progress = model.scanProgress {
+            Text("Scanning \(progress.done) of \(progress.total)").foregroundStyle(Night.secondary)
         } else {
-            Button(action: cleanTapped) {
-                HStack(spacing: 6) {
-                    Text(buttonTitle)
-                    if model.checkedBytes > 0 {
-                        Text("·").opacity(0.7)
-                        SizeText(model.checkedBytes, font: .system(.body, design: .rounded).weight(.semibold),
-                                 unitFont: .system(.body, design: .rounded))
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 4)
-            }
-            .prominentActionStyle()
-            .controlSize(.large)
-            .keyboardShortcut(.defaultAction)
-            .disabled(model.checkedResults.isEmpty)
-            .frame(height: 44)
-            .transition(.opacity)
+            Text(ByteFormat.string(model.checkedBytes)).foregroundStyle(Night.text).fontWeight(.semibold)
+            Text("to clean · \(ByteFormat.string(model.disk.free)) free").foregroundStyle(Night.secondary)
         }
     }
 
-    private var buttonTitle: String {
-        let tiers = Set(model.checkedResults.map(\.item.risk))
-        if model.checkedResults.isEmpty { return model.isScanning ? "Scanning caches" : "Nothing to clean" }
-        return tiers == [.safe] ? "Clean safe caches" : "Clean selected caches"
+    // MARK: Main
+
+    private var main: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(spacing: 8) {
+                ForEach(CleanPreset.allCases) { preset in
+                    PresetTile(preset: preset, isActive: model.activePreset == preset) {
+                        withAnimation(.sweep) { model.apply(preset) }
+                    }
+                }
+            }
+            .disabled(model.cleaning != nil)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 4) {
+                    GroupPill(title: "All", count: 0, isSelected: filter == nil) { withAnimation(.sweep) { filter = nil } }
+                    ForEach(groupsInView, id: \.self) { group in
+                        GroupPill(title: group.title, count: model.checkedCount(in: group), isSelected: filter == group) {
+                            withAnimation(.sweep) { filter = group }
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, -4)
+
+            HStack(spacing: 6) {
+                Text(filter?.title ?? "Everything")
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(Night.text)
+                Text("· \(selectedInView) of \(checkableInView) selected")
+                    .font(.callout)
+                    .foregroundStyle(Night.secondary)
+                Spacer()
+                NightCapsuleButton(title: "All") { withAnimation(.sweep) { model.setAll(true, in: filter) } }
+                NightCapsuleButton(title: "None") { withAnimation(.sweep) { model.setAll(false, in: filter) } }
+            }
+            .disabled(model.cleaning != nil)
+
+            cards
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 4)
     }
 
-    private func bannerDetail(_ banner: FreedBanner) -> String {
-        var text = "from \(banner.count) cache\(banner.count == 1 ? "" : "s")"
-        if banner.failures > 0 { text += ", \(banner.failures) failed" }
-        return text
+    private var groupsInView: [CatalogGroup] {
+        CatalogGroup.allCases.filter { !model.quickRows(in: $0).isEmpty }
     }
+
+    private var rowsInView: [QuickRow] {
+        (filter.map { [$0] } ?? groupsInView).flatMap { model.quickRows(in: $0) }
+    }
+
+    private var checkableInView: Int {
+        model.checkableResults.filter { filter == nil || $0.item.group == filter }.count
+    }
+
+    private var selectedInView: Int { model.checkedCount(in: filter) }
+
+    /// The biggest cache in view gets the full-width card.
+    private var featured: ScanResult? {
+        rowsInView.compactMap(\.result)
+            .filter { model.isCheckable($0) && !model.pending.contains($0.id) }
+            .max { $0.bytes < $1.bytes }
+    }
+
+    private var cards: some View {
+        let rows = rowsInView
+        let featured = self.featured
+        let largest = rows.compactMap(\.result?.bytes).max() ?? 0
+        let columns = [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)]
+        return ScrollView {
+            LazyVStack(alignment: .leading, spacing: 10) {
+                if let featured {
+                    FeaturedCacheCard(result: featured, open: { open(featured.id) }, erase: { model.quickErase(featured) })
+                }
+                ForEach(filter.map { [$0] } ?? groupsInView, id: \.self) { group in
+                    let groupRows = model.quickRows(in: group).filter { $0.id != featured?.id }
+                    if !groupRows.isEmpty {
+                        NightSectionLabel(title: group.title)
+                            .padding(.top, 6)
+                        LazyVGrid(columns: columns, spacing: 10) {
+                            ForEach(groupRows) { row in
+                                CacheCard(row: row, largest: largest) { open(row.id) }
+                                    .staggered(rowIndex(of: row.id))
+                            }
+                        }
+                    }
+                }
+                if model.hiddenQuickRowCount > 0 || model.showEmpty {
+                    @Bindable var model = model
+                    Toggle("Show caches under 1 MB", isOn: $model.showEmpty.animation(.sweep))
+                        .toggleStyle(.checkbox)
+                        .font(.caption)
+                        .foregroundStyle(Night.secondary)
+                        .padding(.top, 4)
+                }
+            }
+            .padding(.vertical, 4)
+            .padding(.bottom, 8)
+        }
+        .frame(maxHeight: 330)
+        .scrollBounceBehavior(.basedOnSize)
+    }
+
+    private func rowIndex(of id: String) -> Int {
+        model.engine.catalog.items.firstIndex { $0.id == id } ?? 0
+    }
+
+    private func open(_ id: String) {
+        withAnimation(.sweep) { detailID = id }
+    }
+
+    // MARK: Footer
+
+    private var footer: some View {
+        HStack(spacing: 14) {
+            Button {
+                openWindow(.projects)
+            } label: {
+                HStack(spacing: 5) {
+                    Image(systemName: "folder.badge.gearshape")
+                    Text(model.projectsScanned
+                         ? "Projects · \(ByteFormat.string(model.projectsBytes))"
+                         : "Projects")
+                    Image(systemName: "arrow.right").font(.caption2)
+                }
+            }
+            Spacer()
+            Button("Open House Keeping") { openWindow(nil) }
+            Button("Quit") { NSApp.terminate(nil) }
+        }
+        .buttonStyle(.plain)
+        .font(.caption)
+        .foregroundStyle(Night.secondary)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+        .background(Color.black.opacity(0.18))
+    }
+
+    // MARK: Actions
 
     private func cleanTapped() {
+        guard model.cleaning == nil else { return }
         let (selections, caution) = model.quickSelection()
+        guard !selections.isEmpty else { return }
         if caution.isEmpty {
             // Only Safe items: clean at once.
             model.clean(selections, source: "menubar")
@@ -162,97 +267,7 @@ struct PopoverView: View {
         }
     }
 
-    // MARK: List
-
-    private var list: some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: 2) {
-                ForEach(CatalogGroup.allCases, id: \.self) { group in
-                    let rows = model.quickRows(in: group)
-                    if !rows.isEmpty {
-                        Text(group.title)
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(.secondary)
-                            .padding(.horizontal, 16)
-                            .padding(.top, 10)
-                            .padding(.bottom, 2)
-                        ForEach(rows) { row in
-                            if let result = row.result {
-                                CacheRow(result: result, isLoading: row.isLoading, isExpanded: expanded == row.id) {
-                                    withAnimation(.sweep) { expanded = expanded == row.id ? nil : row.id }
-                                }
-                                .staggered(rowIndex(of: row.id))
-                            } else {
-                                LoadingRow(item: row.item)
-                                    .staggered(rowIndex(of: row.id))
-                            }
-                        }
-                    }
-                }
-                if model.hiddenQuickRowCount > 0 || model.showEmpty {
-                    @Bindable var model = model
-                    Toggle("Show empty", isOn: $model.showEmpty.animation(.sweep))
-                        .toggleStyle(.checkbox)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                }
-            }
-            .padding(.bottom, 6)
-        }
-        .frame(maxHeight: 280)
-        .scrollBounceBehavior(.basedOnSize)
-    }
-
-    private func rowIndex(of id: String) -> Int {
-        model.engine.catalog.items.firstIndex { $0.id == id } ?? 0
-    }
-
-    // MARK: Projects and footer
-
-    @ViewBuilder
-    private var projectsLine: some View {
-        Button {
-            open(.projects)
-        } label: {
-            HStack {
-                Image(systemName: "folder.badge.gearshape").symbolRenderingMode(.hierarchical)
-                if model.projectsScanned {
-                    Text("Build artifacts: \(ByteFormat.string(model.projectsBytes)) in \(model.projects.count) project\(model.projects.count == 1 ? "" : "s")")
-                } else {
-                    Text("Build artifacts in projects")
-                }
-                Spacer()
-                Image(systemName: "arrow.right").font(.caption)
-            }
-            .font(.callout)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(.secondary)
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-    }
-
-    private var footer: some View {
-        HStack(spacing: 16) {
-            Button("Open House Keeping") { open(nil) }
-            Button("Settings") {
-                openSettings()
-                NSApp.activate(ignoringOtherApps: true)
-            }
-            Spacer()
-            Button("Quit") { NSApp.terminate(nil) }
-        }
-        .buttonStyle(.borderless)
-        .font(.callout)
-        .padding(.horizontal, 16)
-        .padding(.top, 4)
-        .padding(.bottom, 12)
-    }
-
-    private func open(_ section: SidebarSection?) {
+    private func openWindow(_ section: SidebarSection?) {
         if let section { model.requestedSection = section }
         model.openMainWindow?()
         closePopover()
@@ -261,170 +276,6 @@ struct PopoverView: View {
     private func closePopover() {
         // The popover belongs to the status item; closing its window is how it is dismissed.
         NSApp.keyWindow?.close()
-    }
-}
-
-/// One cache in the menu bar list.
-struct CacheRow: View {
-    @Environment(AppModel.self) private var model
-    let result: ScanResult
-    /// The tool is being measured again; the size shown is the previous one.
-    var isLoading = false
-    let isExpanded: Bool
-    let toggleExpanded: () -> Void
-    @State private var confirmCaution = false
-
-    private var isCleaning: Bool { model.cleaning?.active.contains(result.id) == true }
-    private var isQueued: Bool {
-        guard let cleaning = model.cleaning else { return false }
-        return cleaning.itemIDs.contains(result.id) && !cleaning.finished.contains(result.id) && !isCleaning
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 10) {
-                ToolGlyph(item: result.item)
-                VStack(alignment: .leading, spacing: 1) {
-                    Text(result.item.name).lineLimit(1)
-                    if let detail {
-                        Text(detail.text)
-                            .font(.caption)
-                            .foregroundStyle(detail.isError ? AnyShapeStyle(.red) : AnyShapeStyle(.secondary))
-                            .lineLimit(2)
-                    }
-                }
-                Spacer(minLength: 8)
-                trailing
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 6)
-            .contentShape(Rectangle())
-            .onTapGesture(perform: toggleExpanded)
-
-            if isExpanded {
-                details
-                    .padding(.leading, 48)
-                    .padding(.trailing, 16)
-                    .padding(.bottom, 8)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
-            }
-        }
-        .background(isExpanded ? AnyShapeStyle(.quaternary.opacity(0.5)) : AnyShapeStyle(.clear))
-        .confirmationDialog("Clean \(result.item.name)?", isPresented: $confirmCaution) {
-            Button("Clean \(ByteFormat.string(result.bytes))") { model.clean([CleanSelection(result)], source: "menubar") }
-        } message: {
-            Text(result.item.note ?? RiskTier.caution.explanation)
-        }
-    }
-
-    private var detail: (text: String, isError: Bool)? {
-        switch model.outcomes[result.id] {
-        case .failed(let reason): return (reason, true)
-        case .skipped(let reason): return (reason, false)
-        case .freed, nil: break
-        }
-        // A guard holds this row back: say why, in place of the checkbox.
-        if let reason = result.status.reason { return (reason, false) }
-        return nil
-    }
-
-    @ViewBuilder
-    private var trailing: some View {
-        if isCleaning {
-            ProgressView().controlSize(.small)
-        } else if case .freed(let bytes) = model.outcomes[result.id], bytes > 0 {
-            Label("\(ByteFormat.string(bytes)) freed", systemImage: "checkmark")
-                .labelStyle(.titleAndIcon)
-                .font(.callout)
-                .foregroundStyle(.tint)
-        } else {
-            SizeText(result.bytes, font: .system(.callout, design: .rounded))
-                .opacity(isQueued || isLoading ? 0.5 : 1)
-            if isLoading {
-                ProgressView().controlSize(.mini).frame(width: 7)
-            } else {
-                RiskDot(result.item.risk)
-            }
-            if model.isCheckable(result) {
-                Toggle("", isOn: Binding(
-                    get: { model.isChecked(result) },
-                    set: { model.setChecked(result, $0) }
-                ))
-                .toggleStyle(.checkbox)
-                .labelsHidden()
-                .disabled(model.cleaning != nil)
-            } else {
-                Image(systemName: result.status.isReady ? "minus" : "lock")
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
-                    .frame(width: 16)
-            }
-        }
-    }
-
-    private var details: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            ForEach(result.roots, id: \.self) { root in
-                Text(model.context.abbreviate(root))
-                    .font(.caption.monospaced())
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-                    .truncationMode(.middle)
-                    .textSelection(.enabled)
-            }
-            if let modified = result.lastModified {
-                Text("Last changed \(modified.relativeDescription)").font(.caption).foregroundStyle(.secondary)
-            }
-            if !result.actionDescription.isEmpty {
-                Text(result.actionDescription)
-                    .font(.caption.monospaced())
-                    .foregroundStyle(.secondary)
-            }
-            if let note = result.item.note {
-                Text(note).font(.caption).foregroundStyle(.secondary)
-            }
-            if result.isUpperBound {
-                Text("Frees up to this much: the tool keeps what is still in use.").font(.caption).foregroundStyle(.secondary)
-            }
-            HStack {
-                if let root = result.roots.first {
-                    Button("Reveal in Finder") { Finder.reveal(root) }
-                }
-                Spacer()
-                Button("Clean") {
-                    if result.item.risk == .caution {
-                        confirmCaution = true
-                    } else {
-                        model.clean([CleanSelection(result)], source: "menubar")
-                    }
-                }
-                .disabled(!result.status.isReady || result.bytes == 0 || model.cleaning != nil)
-            }
-            .controlSize(.small)
-            .padding(.top, 2)
-        }
-    }
-}
-
-/// A tool whose cache is still being measured: its icon, its name and a spinner where the size will be.
-struct LoadingRow: View {
-    let item: CatalogItem
-
-    var body: some View {
-        HStack(spacing: 10) {
-            ToolGlyph(item: item)
-            Text(item.name).lineLimit(1)
-            Spacer(minLength: 8)
-            Text("Measuring")
-                .font(.caption)
-                .foregroundStyle(.tertiary)
-            ProgressView().controlSize(.small)
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 6)
-        .foregroundStyle(.secondary)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(item.name), measuring")
     }
 }
 

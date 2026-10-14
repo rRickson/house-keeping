@@ -12,6 +12,44 @@ enum RowOutcome: Equatable {
     case skipped(String)
 }
 
+/// A one-tap selection in the popover, like a lighting scene: it ticks the caches it covers and unticks the rest.
+enum CleanPreset: String, CaseIterable, Identifiable {
+    case safe, deep, javascript, apple, agents
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .safe: "Safe"
+        case .deep: "Deep"
+        case .javascript: "JS"
+        case .apple: "Apple"
+        case .agents: "AI"
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .safe: "checkmark.shield"
+        case .deep: "flame"
+        case .javascript: "curlybraces"
+        case .apple: "apple.logo"
+        case .agents: "sparkles"
+        }
+    }
+
+    /// Whether the preset ticks this cache. Ask-tier items are never part of a preset.
+    func includes(_ item: CatalogItem) -> Bool {
+        switch self {
+        case .safe: item.risk == .safe
+        case .deep: item.risk == .safe || item.risk == .caution
+        case .javascript: item.group == .javascript && item.risk != .ask
+        case .apple: item.group == .apple && item.risk != .ask
+        case .agents: item.group == .aiAgents && item.risk != .ask
+        }
+    }
+}
+
 /// One line of the menu bar list. `result` is nil while the tool's first answer is still on its way.
 struct QuickRow: Identifiable {
     var item: CatalogItem
@@ -195,6 +233,35 @@ final class AppModel {
             .filter { $0.item.risk == .safe && isCheckable($0) }
             .map { CleanSelection($0) }
         clean(selections, source: "menubar")
+    }
+
+    // MARK: Presets and selection
+
+    /// Every cache that can be ticked right now.
+    var checkableResults: [ScanResult] { orderedResults.filter(isCheckable) }
+
+    func apply(_ preset: CleanPreset) {
+        for result in checkableResults { overrides[result.id] = preset.includes(result.item) }
+    }
+
+    /// The preset whose selection matches what is ticked, if any.
+    var activePreset: CleanPreset? {
+        let checkable = checkableResults
+        guard !checkable.isEmpty else { return nil }
+        return CleanPreset.allCases.first { preset in
+            checkable.allSatisfy { isChecked($0) == preset.includes($0.item) }
+        }
+    }
+
+    func setAll(_ checked: Bool, in group: CatalogGroup?) {
+        for result in checkableResults where group == nil || result.item.group == group {
+            overrides[result.id] = checked
+        }
+    }
+
+    /// How many caches in a group are ticked, for the badges on the group pills.
+    func checkedCount(in group: CatalogGroup?) -> Int {
+        checkedResults.filter { group == nil || $0.item.group == group }.count
     }
 
     /// How far the running scan is, for the header.
